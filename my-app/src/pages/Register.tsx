@@ -1,8 +1,12 @@
-import { Dropdown, IDropdownOption, PrimaryButton, Stack, StackItem, Text, TextField } from '@fluentui/react';
+import { Dropdown, IDropdownOption, Link, PrimaryButton, Stack, StackItem, Text, TextField } from '@fluentui/react';
 import React, { useState } from 'react';
-import { BaseUrl } from '../utilities';
+import { useNavigate } from 'react-router-dom';
+import useWindowDimensions, { BaseUrl } from '../utilities';
 
 function Register() {
+    const history = useNavigate();
+    const viewPort = useWindowDimensions();
+
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
@@ -25,6 +29,11 @@ function Register() {
     }
 
     const onClickRegister = async () => {
+
+        if (userName.length === 0 || password.length === 0 || name.length === 0 || userType.length === 0) {
+            return;
+        }
+
         const response = await fetch(`${BaseUrl}/register`, {
             method: "POST",
             headers: {
@@ -39,13 +48,19 @@ function Register() {
         })
 
         const data = await response.json();
-
-        console.log(data);
+        if (data.userToken) {
+            localStorage.setItem('token', data.userToken);
+            history('/dashboard');
+        } else {
+            alert('Login Failed');
+        }
     }
+
+    const registerPanelWidth = ["s", "m", "l"].includes(viewPort) ? "250px" : "500px";
 
     return (
         <Stack styles={{ root: { width: "100%", height: "400px", padding: "50px" } }} horizontalAlign='end' verticalAlign='center'>
-            <StackItem styles={{ root: { padding: "50px", backgroundColor: "purple", width: "40%" } }}>
+            <StackItem styles={{ root: { padding: "50px", backgroundColor: "purple", width: registerPanelWidth } }}>
                 <Stack tokens={{ childrenGap: "25px" }} >
                     <StackItem align='center' >
                         <Text variant='large' styles={{ root: { fontWeight: "bold", color: 'white' } }}>Welcome</Text>
@@ -55,14 +70,15 @@ function Register() {
                     <Dropdown
                         placeholder="Select User Type"
                         options={[
-                            { key: 'admin', text: 'Admin' },
-                            { key: 'chef', text: 'Chef' }
+                            { key: 'admin', text: 'Admin/Chef' },
+                            { key: 'chef', text: 'Sous Chef' }
                         ]}
                         onChange={handleUserTypeChange}
                         required={true}
                     />
                     <TextField required placeholder='Full Name' value={name} onChange={handleNameChange} />
                     <PrimaryButton style={{ backgroundColor: "green" }} text='Register' onClick={onClickRegister}></PrimaryButton>
+                    <Link href="/" styles={{ root: { color: "white", textAlign: 'right', fontWeight: "bold" } }} underline>Login</Link>
                 </Stack>
             </StackItem>
         </Stack>

@@ -1,19 +1,15 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BaseUrl, formatDate } from '../utilities';
 import { addDays, DetailsList, IColumn, SelectionMode } from '@fluentui/react';
-import { UserContext } from './Dashboard';
-import EditTaskDialog from './EditTaskDialog';
 
-function Tasks() {
-    const [tasks, setTasks] = useState<any[]>([]);
-    const [selectedTask, setSelectedTask] = useState("");
-    const user = useContext(UserContext);
+function Archived() {
+    const [tasks, setTasks] = useState<any[]>([])
 
     useEffect(() => {
         fetch(`${BaseUrl}/tasks`)
             .then(response => response.json())
             .then(json => setTasks(json.tasks));
-    }, []);
+    });
 
     const columns: IColumn[] = [
         {
@@ -49,21 +45,17 @@ function Tasks() {
             isCollapsible: true
         }
     ];
-    const [showEditDialog, setShowEditDialog] = useState(false);
 
-    const items = user ? tasks.map((task, index) => {
-        if ((task.assignedTo as string[]).includes(user.id)) {
-            return {
-                key: index.toString(),
-                id: task._id,
-                name: task.name,
-                quantity: task.quantity,
-                assignedTo: task.assignedTo as any[],
-                status: task.status,
-                dueDate: task.dueDate
-            }
+    const items = tasks.filter(x => x.status === "DONE").map((task, index) => {
+        return {
+            key: index.toString(),
+            name: task.name,
+            quantity: task.quantity,
+            assignedTo: task.assignedTo,
+            status: task.status,
+            dueDate: task.dueDate
         }
-    }).filter(x => x !== undefined) : [];
+    });
 
     const onRenderItemColumn = (item?: any, index?: number, column?: IColumn) => {
         if (column) {
@@ -96,24 +88,16 @@ function Tasks() {
         }
     }
 
-    const onItemInvoked = (item: any, index: number | undefined) => {
-        setSelectedTask(item.id);
-        setShowEditDialog(true);
-    };
 
     return (
-        <>
-            <DetailsList
-                columns={columns}
-                items={items}
-                selectionMode={SelectionMode.none}
-                onRenderItemColumn={onRenderItemColumn}
-                onItemInvoked={onItemInvoked}
-            >
-            </DetailsList>
-            <EditTaskDialog selectedTaskId={selectedTask} showDialog={showEditDialog} setShowDialog={setShowEditDialog} />
-        </>
+        <DetailsList
+            columns={columns}
+            items={items}
+            selectionMode={SelectionMode.none}
+            onRenderItemColumn={onRenderItemColumn}
+        >
+        </DetailsList>
     )
 }
 
-export default Tasks;
+export default Archived;

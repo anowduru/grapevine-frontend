@@ -1,20 +1,16 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { BaseUrl, formatDate } from '../utilities';
-import { addDays, DetailsList, IColumn, SelectionMode } from '@fluentui/react';
-import { UserContext } from './Dashboard';
-import EditTaskDialog from './EditTaskDialog';
+import { addDays, DetailsList, Facepile, IColumn, PersonaSize, SelectionMode } from "@fluentui/react";
+import { useState } from "react";
+import { formatDate } from "../utilities";
+import EditTaskDialog from "./EditTaskDialog";
 
-function Tasks() {
-    const [tasks, setTasks] = useState<any[]>([]);
-    const [selectedTask, setSelectedTask] = useState("");
-    const user = useContext(UserContext);
-
-    useEffect(() => {
-        fetch(`${BaseUrl}/tasks`)
-            .then(response => response.json())
-            .then(json => setTasks(json.tasks));
-    }, []);
-
+interface TaskListProps {
+    tasks: any[],
+    chefs: any[]
+}
+const PrepListTasks: React.FC<TaskListProps> = ({
+    tasks,
+    chefs
+}) => {
     const columns: IColumn[] = [
         {
             key: 'column1',
@@ -34,6 +30,13 @@ function Tasks() {
             maxWidth: 90,
         },
         {
+            key: 'column3',
+            name: 'CHEF',
+            fieldName: 'assignedTo',
+            minWidth: 70,
+            maxWidth: 120,
+        },
+        {
             key: 'column4',
             name: 'Due Date',
             fieldName: 'dueDate',
@@ -49,21 +52,21 @@ function Tasks() {
             isCollapsible: true
         }
     ];
-    const [showEditDialog, setShowEditDialog] = useState(false);
 
-    const items = user ? tasks.map((task, index) => {
-        if ((task.assignedTo as string[]).includes(user.id)) {
-            return {
-                key: index.toString(),
-                id: task._id,
-                name: task.name,
-                quantity: task.quantity,
-                assignedTo: task.assignedTo as any[],
-                status: task.status,
-                dueDate: task.dueDate
-            }
+    const items = tasks.map((task, index) => {
+        return {
+            key: index.toString(),
+            id: task._id,
+            name: task.name,
+            quantity: task.quantity,
+            assignedTo: task.assignedTo,
+            status: task.status,
+            dueDate: task.dueDate
         }
-    }).filter(x => x !== undefined) : [];
+    });
+
+    const [showEditDialog, setShowEditDialog] = useState(false);
+    const [selectedTask, setSelectedTask] = useState("");
 
     const onRenderItemColumn = (item?: any, index?: number, column?: IColumn) => {
         if (column) {
@@ -72,6 +75,19 @@ function Tasks() {
                     return <span>{item.name}</span>;
                 case 'column2':
                     return <span>{item.quantity} Pcs</span>;
+
+                case 'column3':
+                    const divStyle: React.CSSProperties = { "width": "100%", "display": "flex" };
+                    return (
+                        <div style={divStyle}>
+                            {
+                                (item.assignedTo as string[]).map((chef, index) => {
+                                    return <Facepile key={index} personaSize={PersonaSize.size24} personas={[{ imageInitials: chefs?.find(c => c._id === chef)?.name[0] }]} />
+                                })
+                            }
+                        </div>
+                    );
+
                 case 'column4':
                     const dueDate = new Date(item.dueDate).setHours(0, 0, 0, 0);
                     const todayDate = new Date().setHours(0, 0, 0, 0);
@@ -111,9 +127,9 @@ function Tasks() {
                 onItemInvoked={onItemInvoked}
             >
             </DetailsList>
-            <EditTaskDialog selectedTaskId={selectedTask} showDialog={showEditDialog} setShowDialog={setShowEditDialog} />
+            <EditTaskDialog selectedTaskId={selectedTask} showDialog={showEditDialog} setShowDialog={setShowEditDialog} chefs={chefs} />
         </>
     )
 }
 
-export default Tasks;
+export default PrepListTasks;

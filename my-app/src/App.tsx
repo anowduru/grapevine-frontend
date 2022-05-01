@@ -8,10 +8,10 @@ import Dashboard from './pages/Dashboard';
 
 function App() {
   return (
-    <Stack wrap={true} styles={{ root: { width: "100%", padding: "30px 0 0" } }} tokens={{ childrenGap: "20px" }}>
-      <Stack key="grapevineLogo" horizontal={true} tokens={{ childrenGap: "10px" }} verticalAlign="center">
+    <Stack wrap={true} styles={{ root: { width: "100%", padding: "30px" } }} tokens={{ childrenGap: "50px" }}>
+      <Stack key="grapevineLogo" horizontal={true} styles={{ root: { width: "50%" } }} tokens={{ childrenGap: "10px" }} verticalAlign="center">
         <Image src={logo} />
-        <Text variant='large' styles={{ root: { fontWeight: "bold", } }}>Grapevine</Text>
+        <Text variant='large' styles={{ root: { fontWeight: "bold" } }}>Grapevine</Text>
       </Stack>
       <BrowserRouter>
         <Routes>

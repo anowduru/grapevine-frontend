@@ -1,6 +1,6 @@
 import { INavLinkGroup, INavStyles, Nav, Stack, StackItem } from '@fluentui/react';
-import React, { useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import React, { createContext, useEffect, useState } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import PrepList from './PrepList';
 import Tasks from './Tasks';
 import PreplistImg from "../images/Preplist.png";
@@ -8,19 +8,27 @@ import InventoryImg from "../images/Inventory.png";
 import OrdersImg from "../images/Orders.png";
 import RecipesImg from "../images/Recipes.png";
 import TaskImg from "../images/Tasks.png";
+import Archived from './Archived';
+import * as Jwt from 'jsonwebtoken';
+import UserInfoPanel from './UserInfoPanel';
+import useWindowDimensions from '../utilities';
+
+export const UserContext = createContext({} as any);
 
 function Dashboard() {
+
+    const navigate = useNavigate();
+    const [user, setUser] = useState<any>();
     const navStyles: Partial<INavStyles> = {
         root: {
-            width: 208,
-            height: "100vh",
+            width: 150,
             boxSizing: 'border-box',
-            border: '1px solid #eee',
             overflowY: 'auto',
         },
     };
 
-    //Todo add useEffect
+    const viewPort = useWindowDimensions();
+    const isSmallViewPort = ["s", "m", "l"].includes(viewPort);
 
     const navLinkGroups: INavLinkGroup[] = [
         {
@@ -82,29 +90,50 @@ function Dashboard() {
                             height: "100%"
                         }
                     }
+                },
+                {
+                    name: 'Archived Tasks',
+                    url: '/dashboard/archivedTasks',
+                    key: 'archivedTasks',
                 }
             ],
         },
     ];
 
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            const userDecoded = Jwt.decode(token) as any;
+            setUser(userDecoded);
+        }
+        else {
+            navigate('/');
+        }
+    }, [navigate])
+
     return (
-        <Stack horizontal={true} tokens={{ childrenGap: "50px" }}>
-            <StackItem>
-                <Nav
-                    ariaLabel="Grapevine navigation"
-                    styles={navStyles}
-                    groups={navLinkGroups}
-                />
-            </StackItem>
-            <StackItem>
-                <Routes>
-                    <Route>
-                        <Route path='/prepList' element={<PrepList />} />
-                        <Route path='/tasks' element={<Tasks />} />
-                    </Route>
-                </Routes>
-            </StackItem>
-        </Stack>
+        <UserContext.Provider value={user}>
+            <UserInfoPanel />
+            <Stack horizontal={!isSmallViewPort} tokens={{ childrenGap: "50px" }}>
+                <StackItem>
+                    <Nav
+                        ariaLabel="Grapevine navigation"
+                        styles={navStyles}
+                        groups={navLinkGroups}
+
+                    />
+                </StackItem>
+                <StackItem>
+                    <Routes>
+                        <Route>
+                            <Route path='/prepList' element={<PrepList />} />
+                            <Route path='/tasks' element={<Tasks />} />
+                            <Route path='/archivedTasks' element={<Archived />} />
+                        </Route>
+                    </Routes>
+                </StackItem>
+            </Stack>
+        </UserContext.Provider>
     )
 }
 
