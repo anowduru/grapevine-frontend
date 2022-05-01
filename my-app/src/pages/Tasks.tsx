@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { BaseUrl, formatDate } from '../utilities';
-import { addDays, DetailsList, IColumn, SelectionMode } from '@fluentui/react';
+import { addDays, DetailsList, DetailsRow, IColumn, IDetailsRowProps, SelectionMode } from '@fluentui/react';
 import { UserContext } from './Dashboard';
 import EditTaskDialog from './EditTaskDialog';
 
@@ -98,10 +98,18 @@ function Tasks() {
         }
     }
 
-    const onItemInvoked = (item: any, index: number | undefined) => {
+    const onItemInvoked = (item: any) => {
         setSelectedTask(item.id);
         setShowEditDialog(true);
     };
+
+    const onRenderRow = (props?: IDetailsRowProps): JSX.Element => {
+        return (
+            <div onClick={() => { onItemInvoked(props?.item) }}>
+                {props && <DetailsRow {...props} />}
+            </div>
+        );
+    }
 
     return (
         <>
@@ -110,7 +118,7 @@ function Tasks() {
                 items={items}
                 selectionMode={SelectionMode.none}
                 onRenderItemColumn={onRenderItemColumn}
-                onItemInvoked={onItemInvoked}
+                onRenderRow={onRenderRow}
             >
             </DetailsList>
             <EditTaskDialog selectedTaskId={selectedTask} showDialog={showEditDialog} setShowDialog={setShowEditDialog} />

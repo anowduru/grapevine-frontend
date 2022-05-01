@@ -42,7 +42,6 @@ const EditTaskDialog: React.FC<EditTaskProps> = ({
                     setTaskTitle(task.name);
                     setStatus(task.status)
                     setSelectedChefs(task.assignedTo);
-                    console.log(new Date(task.dueDate))
                     setDueDate(new Date(task.dueDate));
                 }
             });
@@ -200,7 +199,7 @@ const EditTaskDialog: React.FC<EditTaskProps> = ({
 
     return (
         <>
-            <Dialog minWidth={"500px"} isBlocking={true} hidden={!showDialog} onDismiss={() => { setShowDialog(false) }}>
+            <Dialog modalProps={{ isBlocking: true }} minWidth={"500px"} hidden={!showDialog} onDismiss={() => { setShowDialog(false) }}>
                 <Stack tokens={{ childrenGap: "25px" }} >
                     <Dropdown
                         placeholder="Select Category"

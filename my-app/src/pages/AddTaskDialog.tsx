@@ -163,7 +163,7 @@ const AddTaskDialog: React.FC<TaskProps> = ({
 
     return (
         <>
-            <Dialog minWidth={"500px"} isBlocking={true} hidden={!showAddTaskDialog} onDismiss={() => { setShowAddTaskDialog(false) }}>
+            <Dialog minWidth={"500px"} modalProps={{ isBlocking: true }} hidden={!showAddTaskDialog} onDismiss={() => { setShowAddTaskDialog(false) }}>
                 <Stack tokens={{ childrenGap: "25px" }} >
                     <Dropdown
                         placeholder="Select Category"

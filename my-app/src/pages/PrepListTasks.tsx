@@ -1,4 +1,4 @@
-import { addDays, DetailsList, Facepile, IColumn, PersonaSize, SelectionMode } from "@fluentui/react";
+import { addDays, DetailsList, DetailsRow, Facepile, IColumn, IDetailsRowProps, PersonaSize, SelectionMode } from "@fluentui/react";
 import { useState } from "react";
 import { formatDate } from "../utilities";
 import EditTaskDialog from "./EditTaskDialog";
@@ -112,10 +112,18 @@ const PrepListTasks: React.FC<TaskListProps> = ({
         }
     }
 
-    const onItemInvoked = (item: any, index: number | undefined) => {
+    const onItemInvoked = (item: any) => {
         setSelectedTask(item.id);
         setShowEditDialog(true);
     };
+
+    const onRenderRow = (props?: IDetailsRowProps): JSX.Element => {
+        return (
+            <div onClick={() => { onItemInvoked(props?.item) }}>
+                {props && <DetailsRow {...props} />}
+            </div>
+        );
+    }
 
     return (
         <>
@@ -124,7 +132,7 @@ const PrepListTasks: React.FC<TaskListProps> = ({
                 items={items}
                 selectionMode={SelectionMode.none}
                 onRenderItemColumn={onRenderItemColumn}
-                onItemInvoked={onItemInvoked}
+                onRenderRow={onRenderRow}
             >
             </DetailsList>
             <EditTaskDialog selectedTaskId={selectedTask} showDialog={showEditDialog} setShowDialog={setShowEditDialog} chefs={chefs} />

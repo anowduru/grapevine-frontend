@@ -69,7 +69,7 @@ const AddCategory: React.FC<CategoryProps> = ({
     const minWidth = ["s", "m", "l"].includes(viewPort) ? "100vw" : "500px";
 
     return (
-        <Dialog minWidth={minWidth} isBlocking={true} hidden={!showCategoryDialog} onDismiss={() => { setShowCategoryDialog(false) }}>
+        <Dialog minWidth={minWidth} modalProps={{ isBlocking: true }} hidden={!showCategoryDialog} onDismiss={() => { setShowCategoryDialog(false) }}>
             <Stack tokens={{ childrenGap: "25px" }} >
                 <Text variant='xLarge' styles={{ root: { fontWeight: "bold", color: "purple" } }}>Add Category</Text>
                 <TextField placeholder='Category Title' underlined={true} errorMessage={categoryErrorMessage} value={category} onChange={handleCategoryChange} />

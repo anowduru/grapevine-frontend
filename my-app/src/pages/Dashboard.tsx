@@ -1,14 +1,11 @@
 import { INavLinkGroup, INavStyles, Nav, Stack, StackItem } from '@fluentui/react';
-import React, { createContext, useEffect, useState } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
-import PrepList from './PrepList';
-import Tasks from './Tasks';
+import { createContext, useEffect, useState } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 import PreplistImg from "../images/Preplist.png";
 import InventoryImg from "../images/Inventory.png";
 import OrdersImg from "../images/Orders.png";
 import RecipesImg from "../images/Recipes.png";
 import TaskImg from "../images/Tasks.png";
-import Archived from './Archived';
 import * as Jwt from 'jsonwebtoken';
 import UserInfoPanel from './UserInfoPanel';
 import useWindowDimensions from '../utilities';
@@ -124,13 +121,7 @@ function Dashboard() {
                     />
                 </StackItem>
                 <StackItem>
-                    <Routes>
-                        <Route>
-                            <Route path='/prepList' element={<PrepList />} />
-                            <Route path='/tasks' element={<Tasks />} />
-                            <Route path='/archivedTasks' element={<Archived />} />
-                        </Route>
-                    </Routes>
+                    <Outlet />
                 </StackItem>
             </Stack>
         </UserContext.Provider>
