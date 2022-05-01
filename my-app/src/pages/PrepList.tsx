@@ -28,7 +28,7 @@ function PrepList() {
     }, []);
 
     return (
-        <Stack tokens={{ childrenGap: "30px" }}>
+        <Stack tokens={{ childrenGap: "30px", maxWidth: "90vw" }}>
             <Text variant='xxLarge' styles={{ root: { fontWeight: "bold", color: "purple" } }}>Prep List</Text>
             <Stack wrap horizontal={true} tokens={{ childrenGap: "20px" }}>
                 {categories.map((category, index) => {

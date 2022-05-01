@@ -1,6 +1,6 @@
 import { addDays, DatePicker, Dialog, Dropdown, Facepile, IDropdownOption, ISelectableOption, PersonaSize, PrimaryButton, Stack, StackItem, TextField } from "@fluentui/react";
 import { useEffect, useState } from "react";
-import { BaseUrl } from "../utilities";
+import useWindowDimensions, { BaseUrl } from "../utilities";
 
 interface EditTaskProps {
     showDialog: boolean,
@@ -197,9 +197,12 @@ const EditTaskDialog: React.FC<EditTaskProps> = ({
         return ret.slice(0, -1);
     };
 
+    const viewPort = useWindowDimensions();
+    const minWidth = ["s", "m", "l"].includes(viewPort) ? "90vw" : "500px";
+
     return (
         <>
-            <Dialog modalProps={{ isBlocking: true }} minWidth={"500px"} hidden={!showDialog} onDismiss={() => { setShowDialog(false) }}>
+            <Dialog modalProps={{ isBlocking: true }} minWidth={minWidth} hidden={!showDialog} onDismiss={() => { setShowDialog(false) }}>
                 <Stack tokens={{ childrenGap: "25px" }} >
                     <Dropdown
                         placeholder="Select Category"

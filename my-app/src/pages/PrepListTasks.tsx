@@ -16,7 +16,7 @@ const PrepListTasks: React.FC<TaskListProps> = ({
             key: 'column1',
             name: 'Task',
             fieldName: 'name',
-            minWidth: 100,
+            minWidth: 80,
             maxWidth: 200,
             isRowHeader: true,
             isSorted: true,
@@ -26,7 +26,7 @@ const PrepListTasks: React.FC<TaskListProps> = ({
             key: 'column2',
             name: 'QTY',
             fieldName: 'quantity',
-            minWidth: 70,
+            minWidth: 60,
             maxWidth: 90,
         },
         {
@@ -40,14 +40,14 @@ const PrepListTasks: React.FC<TaskListProps> = ({
             key: 'column4',
             name: 'Due Date',
             fieldName: 'dueDate',
-            minWidth: 70,
+            minWidth: 60,
             maxWidth: 150,
             isCollapsible: true
         }, {
             key: 'column5',
             name: 'Status',
             fieldName: 'status',
-            minWidth: 70,
+            minWidth: 60,
             maxWidth: 120,
             isCollapsible: true
         }

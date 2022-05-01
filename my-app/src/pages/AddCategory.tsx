@@ -66,7 +66,7 @@ const AddCategory: React.FC<CategoryProps> = ({
         }
     }
 
-    const minWidth = ["s", "m", "l"].includes(viewPort) ? "100vw" : "500px";
+    const minWidth = ["s", "m", "l"].includes(viewPort) ? "90vw" : "500px";
 
     return (
         <Dialog minWidth={minWidth} modalProps={{ isBlocking: true }} hidden={!showCategoryDialog} onDismiss={() => { setShowCategoryDialog(false) }}>
