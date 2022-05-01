@@ -63,7 +63,7 @@ function Tasks() {
                 dueDate: task.dueDate
             }
         } else {
-            return {}
+            return undefined
         }
     }).filter(x => x !== undefined) : [];
 
