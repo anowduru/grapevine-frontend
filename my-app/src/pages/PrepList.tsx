@@ -1,6 +1,6 @@
-import { DefaultButton, PrimaryButton, Stack, StackItem, Text } from '@fluentui/react';
+import { DefaultButton, Stack, StackItem, Text } from '@fluentui/react';
 import { useContext, useEffect, useState } from 'react';
-import useWindowDimensions, { BaseUrl } from '../utilities';
+import { BaseUrl } from '../utilities';
 import AddCategory from './AddCategory';
 import AddTaskDialog from './AddTaskDialog';
 import { UserContext } from './Dashboard';
@@ -12,8 +12,6 @@ function PrepList() {
     const [tasks, setTasks] = useState<any[]>([])
     const [showCategoryDialog, setShowCategoryDialog] = useState(false);
     const user = useContext(UserContext);
-
-    const viewPort = useWindowDimensions();
 
     useEffect(() => {
         fetch(`${BaseUrl}/taskCategories`)

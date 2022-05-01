@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const BaseUrl = "http://localhost:5000/api";
+export const BaseUrl = "https://grapevine-node-server.herokuapp.com/api";
 
 export const formatDate = (date: Date) => {
     const day = date.toLocaleString('default', { day: '2-digit' });
