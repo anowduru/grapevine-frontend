@@ -35,7 +35,8 @@ function Dashboard() {
             links: [
                 {
                     name: 'Prep list',
-                    url: '/dashboard/preplist',
+                    url: '',
+                    onClick: () => { navigate('preplist') },
                     key: 'prepList',
                     iconProps: {
                         imageProps: {
@@ -46,7 +47,8 @@ function Dashboard() {
                 },
                 {
                     name: 'My tasks',
-                    url: '/dashboard/tasks',
+                    url: '',
+                    onClick: () => { navigate('tasks') },
                     key: 'task',
                     iconProps: {
                         imageProps: {
@@ -93,7 +95,8 @@ function Dashboard() {
                 },
                 {
                     name: 'Archived Tasks',
-                    url: '/dashboard/archivedTasks',
+                    url: '',
+                    onClick: () => { navigate('archivedTasks') },
                     key: 'archivedTasks',
                 }
             ],
