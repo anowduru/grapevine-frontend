@@ -5,9 +5,6 @@ import Register from './pages/Register';
 import { Image, Stack, Text } from "@fluentui/react";
 import logo from "./images/Grapevine_Logo.png";
 import Dashboard from './pages/Dashboard';
-import PrepList from './pages/PrepList';
-import Tasks from './pages/Tasks';
-import Archived from './pages/Archived';
 
 function App() {
 
@@ -22,11 +19,7 @@ function App() {
         <Routes>
           <Route path='' element={<Login />} />
           <Route path='register' element={<Register />} />
-          <Route path='dashboard' element={<Dashboard />} >
-            <Route path='prepList' element={<PrepList />} />
-            <Route path='tasks' element={<Tasks />} />
-            <Route path='archivedTasks' element={<Archived />} />
-          </Route>
+          <Route path='dashboard/*' element={<Dashboard />} />
         </Routes>
       </BrowserRouter>
     </ Stack>

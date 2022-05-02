@@ -1,6 +1,6 @@
 import { INavLinkGroup, INavStyles, Nav, Stack, StackItem } from '@fluentui/react';
 import { createContext, useEffect, useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import PreplistImg from "../images/Preplist.png";
 import InventoryImg from "../images/Inventory.png";
 import OrdersImg from "../images/Orders.png";
@@ -9,6 +9,9 @@ import TaskImg from "../images/Tasks.png";
 import * as Jwt from 'jsonwebtoken';
 import UserInfoPanel from './UserInfoPanel';
 import useWindowDimensions from '../utilities';
+import PrepList from './PrepList';
+import Tasks from './Tasks';
+import Archived from './Archived';
 
 export const UserContext = createContext({} as any);
 
@@ -32,7 +35,8 @@ function Dashboard() {
             links: [
                 {
                     name: 'Prep list',
-                    url: '/dashboard/preplist',
+                    target: '/dashboard/preplist',
+                    url: '',
                     key: 'prepList',
                     iconProps: {
                         imageProps: {
@@ -121,7 +125,13 @@ function Dashboard() {
                     />
                 </StackItem>
                 <StackItem>
-                    <Outlet />
+                    <div>
+                        <Routes>
+                            <Route path='dashboard/prepList' element={<PrepList />} />
+                            <Route path='tasks' element={<Tasks />} />
+                            <Route path='archivedTasks' element={<Archived />} />
+                        </Routes>
+                    </div>
                 </StackItem>
             </Stack>
         </UserContext.Provider>
