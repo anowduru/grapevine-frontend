@@ -8,7 +8,6 @@ import Dashboard from './pages/Dashboard';
 
 function App() {
 
-  console.log("in App");
   return (
     <Stack wrap={true} styles={{ root: { width: "100%", padding: "30px" } }} tokens={{ childrenGap: "50px" }}>
       <Stack key="grapevineLogo" horizontal={true} styles={{ root: { width: "50%" } }} tokens={{ childrenGap: "10px" }} verticalAlign="center">

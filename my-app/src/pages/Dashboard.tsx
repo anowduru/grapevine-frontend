@@ -35,8 +35,7 @@ function Dashboard() {
             links: [
                 {
                     name: 'Prep list',
-                    target: '/dashboard/preplist',
-                    url: '',
+                    url: '/dashboard/preplist',
                     key: 'prepList',
                     iconProps: {
                         imageProps: {
@@ -127,7 +126,7 @@ function Dashboard() {
                 <StackItem>
                     <div>
                         <Routes>
-                            <Route path='dashboard/prepList' element={<PrepList />} />
+                            <Route path='prepList' element={<PrepList />} />
                             <Route path='tasks' element={<Tasks />} />
                             <Route path='archivedTasks' element={<Archived />} />
                         </Routes>
