@@ -45,7 +45,7 @@ function PrepList() {
                 )}
             </Stack>
             <StackItem>
-                <PrepListTasks tasks={tasks} chefs={chefs} />
+                <PrepListTasks tasks={tasks} chefs={chefs} setTasks={setTasks} />
             </StackItem>
             <StackItem align='end'>
                 <AddTaskDialog categories={categories} setTasks={setTasks} chefs={chefs} />

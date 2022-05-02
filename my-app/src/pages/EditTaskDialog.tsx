@@ -6,14 +6,16 @@ interface EditTaskProps {
     showDialog: boolean,
     setShowDialog: any,
     selectedTaskId: any,
-    chefs?: any[]
+    chefs?: any[],
+    refreshTasks: any
 };
 
 const EditTaskDialog: React.FC<EditTaskProps> = ({
     showDialog,
     setShowDialog,
     chefs,
-    selectedTaskId
+    selectedTaskId,
+    refreshTasks
 }) => {
 
     const todayDate = new Date(Date.now());
@@ -98,6 +100,8 @@ const EditTaskDialog: React.FC<EditTaskProps> = ({
             setStatus('');
             setSelectedChefs([]);
             setDueDate(addDays(todayDate, 1))
+            refreshTasks(data.tasks);
+            setShowDialog(false);
         }
     };
     const dropDownOptions = categories.map(category => {

@@ -121,7 +121,7 @@ function Tasks() {
                 onRenderRow={onRenderRow}
             >
             </DetailsList>
-            <EditTaskDialog selectedTaskId={selectedTask} showDialog={showEditDialog} setShowDialog={setShowEditDialog} />
+            <EditTaskDialog refreshTasks={setTasks} selectedTaskId={selectedTask} showDialog={showEditDialog} setShowDialog={setShowEditDialog} />
         </>
     )
 }

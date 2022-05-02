@@ -5,11 +5,13 @@ import EditTaskDialog from "./EditTaskDialog";
 
 interface TaskListProps {
     tasks: any[],
-    chefs: any[]
+    chefs: any[],
+    setTasks: any
 }
 const PrepListTasks: React.FC<TaskListProps> = ({
     tasks,
-    chefs
+    chefs,
+    setTasks
 }) => {
     const columns: IColumn[] = [
         {
@@ -135,7 +137,7 @@ const PrepListTasks: React.FC<TaskListProps> = ({
                 onRenderRow={onRenderRow}
             >
             </DetailsList>
-            <EditTaskDialog selectedTaskId={selectedTask} showDialog={showEditDialog} setShowDialog={setShowEditDialog} chefs={chefs} />
+            <EditTaskDialog refreshTasks={setTasks} selectedTaskId={selectedTask} showDialog={showEditDialog} setShowDialog={setShowEditDialog} chefs={chefs} />
         </>
     )
 }
