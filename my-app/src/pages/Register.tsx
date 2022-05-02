@@ -70,8 +70,8 @@ function Register() {
                     <Dropdown
                         placeholder="Select User Type"
                         options={[
-                            { key: 'admin', text: 'Admin/Chef' },
-                            { key: 'chef', text: 'Sous Chef' }
+                            { key: 'Admin', text: 'Admin/Chef' },
+                            { key: 'Chef', text: 'Sous Chef' }
                         ]}
                         onChange={handleUserTypeChange}
                         required={true}
