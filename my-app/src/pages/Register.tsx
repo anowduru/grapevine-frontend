@@ -25,7 +25,7 @@ function Register() {
     }
 
     const handleUserTypeChange = (_event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => {
-        setUserType(option?.text ?? "");
+        setUserType(option?.key.toString() ?? "");
     }
 
     const onClickRegister = async () => {
