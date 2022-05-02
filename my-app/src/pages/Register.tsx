@@ -50,7 +50,7 @@ function Register() {
         const data = await response.json();
         if (data.userToken) {
             localStorage.setItem('token', data.userToken);
-            history('/dashboard');
+            history('/dashboard/preplist');
         } else {
             alert('Login Failed');
         }

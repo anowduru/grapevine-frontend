@@ -70,6 +70,7 @@ const AddTaskDialog: React.FC<TaskProps> = ({
             setTaskTitle('');
             setDueDate(addDays(todayDate, 1))
             setTasks(data.tasks)
+            setShowAddTaskDialog(false)
         }
     };
 
