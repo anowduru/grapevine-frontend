@@ -40,11 +40,20 @@ function Tasks() {
             minWidth: 70,
             maxWidth: 150,
             isCollapsible: true
-        }, {
+        },
+        {
             key: 'column5',
+            name: 'Priority',
+            fieldName: 'priority',
+            minWidth: 60,
+            maxWidth: 120,
+            isCollapsible: true
+        },
+        {
+            key: 'column6',
             name: 'Status',
             fieldName: 'status',
-            minWidth: 70,
+            minWidth: 60,
             maxWidth: 120,
             isCollapsible: true
         }
@@ -60,6 +69,7 @@ function Tasks() {
                 quantity: task.quantity,
                 assignedTo: task.assignedTo as any[],
                 status: task.status,
+                priority: task.priority,
                 dueDate: task.dueDate
             }
         } else {
@@ -86,8 +96,9 @@ function Tasks() {
                     else {
                         return <span>{formatDate(new Date(item.dueDate))}</span>
                     }
-
                 case 'column5':
+                    return <span>{item.priority}</span>;
+                case 'column6':
                     if (item.status === "NOTSTARTED")
                         return <span>Yet to Begin</span>;
                     else if (item.status === "DONE")
@@ -102,6 +113,11 @@ function Tasks() {
         setSelectedTask(item.id);
         setShowEditDialog(true);
     };
+
+    const onRefreshTasks = (tasks: any) => {
+        setSelectedTask("");
+        setTasks(tasks)
+    }
 
     const onRenderRow = (props?: IDetailsRowProps): JSX.Element => {
         return (
@@ -121,7 +137,7 @@ function Tasks() {
                 onRenderRow={onRenderRow}
             >
             </DetailsList>
-            <EditTaskDialog refreshTasks={setTasks} selectedTaskId={selectedTask} showDialog={showEditDialog} setShowDialog={setShowEditDialog} />
+            <EditTaskDialog refreshTasks={onRefreshTasks} selectedTaskId={selectedTask} showDialog={showEditDialog} setShowDialog={setShowEditDialog} />
         </>
     )
 }

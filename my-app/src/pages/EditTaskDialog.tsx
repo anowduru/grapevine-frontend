@@ -21,6 +21,7 @@ const EditTaskDialog: React.FC<EditTaskProps> = ({
     const todayDate = new Date(Date.now());
     const [category, setCategory] = useState<string | number>('');
     const [status, setStatus] = useState<string | number>('');
+    const [priority, setPriority] = useState<string | number>();
     const [quantity, setQuantity] = useState('');
     const [notes, setNotes] = useState('');
     const [dueDate, setDueDate] = useState<Date>(addDays(todayDate, 1));
@@ -42,7 +43,8 @@ const EditTaskDialog: React.FC<EditTaskProps> = ({
                     setQuantity(task.quantity);
                     setNotes(task.notes);
                     setTaskTitle(task.name);
-                    setStatus(task.status)
+                    setStatus(task.status);
+                    setPriority(task.priority);
                     setSelectedChefs(task.assignedTo);
                     setDueDate(new Date(task.dueDate));
                 }
@@ -70,6 +72,7 @@ const EditTaskDialog: React.FC<EditTaskProps> = ({
         if (status === "") {
             isValid = false;
         }
+
         if (!isValid) {
             return;
         }
@@ -86,7 +89,8 @@ const EditTaskDialog: React.FC<EditTaskProps> = ({
                 notes,
                 selectedChefs,
                 quantity,
-                status
+                status,
+                priority
             })
         })
 
@@ -98,6 +102,7 @@ const EditTaskDialog: React.FC<EditTaskProps> = ({
             setNotes('');
             setTaskTitle('');
             setStatus('');
+            setPriority('Medium');
             setSelectedChefs([]);
             setDueDate(addDays(todayDate, 1))
             refreshTasks(data.tasks);
@@ -118,6 +123,12 @@ const EditTaskDialog: React.FC<EditTaskProps> = ({
         { "key": "INPROGRESS", "text": "In Progress" }
     ]
 
+    const priorityDropDown = [
+        { "key": "High", "text": "High" },
+        { "key": "Medium", "text": "Medium" },
+        { "key": "Low", "text": "Low" }
+    ]
+
     const handleTaskTitleChange = (_event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
         setTaskTitle(newValue ?? "");
     }
@@ -136,6 +147,10 @@ const EditTaskDialog: React.FC<EditTaskProps> = ({
 
     const handleStatusChange = (_event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => {
         setStatus(option?.key ?? "");
+    }
+
+    const handlePriorityChange = (_event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => {
+        setPriority(option?.key ?? "");
     }
 
     const onAssignChef = (_event: React.FormEvent<HTMLDivElement>, item?: IDropdownOption): void => {
@@ -209,11 +224,11 @@ const EditTaskDialog: React.FC<EditTaskProps> = ({
             <Dialog modalProps={{ isBlocking: true }} minWidth={minWidth} hidden={!showDialog} onDismiss={() => { setShowDialog(false) }}>
                 <Stack tokens={{ childrenGap: "25px" }} >
                     <Dropdown
-                        placeholder="Select Category"
+                        label="Category"
                         selectedKey={category}
                         options={dropDownOptions}
                         onChange={handleCategoryChange}
-                        styles={{ root: { width: "150px" }, title: { borderColor: "transparent", color: "purple" }, dropdownItemSelected: { color: "purple" }, dropdownItem: { color: "purple" } }}
+                        styles={{ root: { width: "150px" }, label: { color: "purple" }, dropdownItemSelected: { color: "purple" }, dropdownItem: { color: "purple" } }}
                     />
                     <Stack horizontal={true} tokens={{ childrenGap: "10px" }}>
                         <StackItem styles={{ root: { width: "80%" } }}>
@@ -247,13 +262,22 @@ const EditTaskDialog: React.FC<EditTaskProps> = ({
                             formatDate={datePickerFormatter}
                         />
                     </Stack>
-                    <Dropdown
-                        placeholder="Select status"
-                        selectedKey={status}
-                        options={statusDropDown}
-                        onChange={handleStatusChange}
-                        styles={{ root: { width: "150px" } }}
-                    />
+                    <Stack horizontal={true} horizontalAlign="space-between">
+                        <Dropdown
+                            selectedKey={status}
+                            options={statusDropDown}
+                            onChange={handleStatusChange}
+                            label="Status"
+                            styles={{ root: { width: "150px" }, label: { color: "purple" } }}
+                        />
+                        <Dropdown
+                            selectedKey={priority}
+                            options={priorityDropDown}
+                            onChange={handlePriorityChange}
+                            label="Priority"
+                            styles={{ root: { width: "150px" }, label: { color: "purple" } }}
+                        />
+                    </Stack>
                     <TextField placeholder='Notes' multiline underlined={true} value={notes} onChange={handleNotesChange} />
                     <StackItem align='end'>
                         <PrimaryButton style={{ backgroundColor: "purple", width: "150px", borderRadius: "16px" }} text='Update' onClick={onClickAdd}></PrimaryButton>

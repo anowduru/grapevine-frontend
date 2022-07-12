@@ -18,10 +18,9 @@ const PrepListTasks: React.FC<TaskListProps> = ({
             key: 'column1',
             name: 'Task',
             fieldName: 'name',
-            minWidth: 80,
+            minWidth: 100,
             maxWidth: 200,
             isRowHeader: true,
-            isSorted: true,
             isSortedDescending: false,
         },
         {
@@ -45,8 +44,17 @@ const PrepListTasks: React.FC<TaskListProps> = ({
             minWidth: 60,
             maxWidth: 150,
             isCollapsible: true
-        }, {
+        },
+        {
             key: 'column5',
+            name: 'Priority',
+            fieldName: 'priority',
+            minWidth: 60,
+            maxWidth: 120,
+            isCollapsible: true
+        },
+        {
+            key: 'column6',
             name: 'Status',
             fieldName: 'status',
             minWidth: 60,
@@ -63,6 +71,7 @@ const PrepListTasks: React.FC<TaskListProps> = ({
             quantity: task.quantity,
             assignedTo: task.assignedTo,
             status: task.status,
+            priority: task.priority,
             dueDate: task.dueDate
         }
     });
@@ -89,7 +98,6 @@ const PrepListTasks: React.FC<TaskListProps> = ({
                             }
                         </div>
                     );
-
                 case 'column4':
                     const dueDate = new Date(item.dueDate).setHours(0, 0, 0, 0);
                     const todayDate = new Date().setHours(0, 0, 0, 0);
@@ -102,14 +110,16 @@ const PrepListTasks: React.FC<TaskListProps> = ({
                     else {
                         return <span>{formatDate(new Date(item.dueDate))}</span>
                     }
-
                 case 'column5':
+                    return <span>{item.priority}</span>;
+                case 'column6':
                     if (item.status === "NOTSTARTED")
                         return <span>Yet to Begin</span>;
                     else if (item.status === "DONE")
                         return <span>Done</span>;
-                    if (item.status === "INPROGRESS")
+                    else if (item.status === "INPROGRESS")
                         return <span>In Progress</span>;
+                    break;
             }
         }
     }
@@ -118,6 +128,11 @@ const PrepListTasks: React.FC<TaskListProps> = ({
         setSelectedTask(item.id);
         setShowEditDialog(true);
     };
+
+    const onRefreshTasks = (tasks: any) => {
+        setSelectedTask("");
+        setTasks(tasks)
+    }
 
     const onRenderRow = (props?: IDetailsRowProps): JSX.Element => {
         return (
@@ -137,7 +152,7 @@ const PrepListTasks: React.FC<TaskListProps> = ({
                 onRenderRow={onRenderRow}
             >
             </DetailsList>
-            <EditTaskDialog refreshTasks={setTasks} selectedTaskId={selectedTask} showDialog={showEditDialog} setShowDialog={setShowEditDialog} chefs={chefs} />
+            <EditTaskDialog refreshTasks={onRefreshTasks} selectedTaskId={selectedTask} showDialog={showEditDialog} setShowDialog={setShowEditDialog} chefs={chefs} />
         </>
     )
 }

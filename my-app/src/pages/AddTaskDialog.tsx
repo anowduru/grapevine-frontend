@@ -21,6 +21,7 @@ const AddTaskDialog: React.FC<TaskProps> = ({
     const [category, setCategory] = useState<string | number>('');
     const [quantity, setQuantity] = useState('');
     const [notes, setNotes] = useState('');
+    const [priority, setPriority] = useState<string | number>("Medium");
     const [dueDate, setDueDate] = useState<Date>(addDays(todayDate, 1));
     const [taskTitle, setTaskTitle] = useState('');
     const [selectedChefs, setSelectedChefs] = useState<string[]>([]);
@@ -57,6 +58,7 @@ const AddTaskDialog: React.FC<TaskProps> = ({
                 dueDate,
                 notes,
                 selectedChefs,
+                priority,
                 quantity
             })
         })
@@ -68,11 +70,18 @@ const AddTaskDialog: React.FC<TaskProps> = ({
             setQuantity('');
             setNotes('');
             setTaskTitle('');
+            setPriority('Medium');
             setDueDate(addDays(todayDate, 1))
             setTasks(data.tasks)
             setShowAddTaskDialog(false)
         }
     };
+
+    const priorityDropDown = [
+        { "key": "High", "text": "High" },
+        { "key": "Medium", "text": "Medium" },
+        { "key": "Low", "text": "Low" }
+    ];
 
     const dropDownOptions = categories.map(category => {
         return { "key": category._id, "text": category.name }
@@ -96,6 +105,10 @@ const AddTaskDialog: React.FC<TaskProps> = ({
 
     const handleCategoryChange = (_event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => {
         setCategory(option?.key ?? "");
+    }
+
+    const handlePriorityChange = (_event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => {
+        setPriority(option?.key ?? "");
     }
 
 
@@ -203,6 +216,13 @@ const AddTaskDialog: React.FC<TaskProps> = ({
                             formatDate={datePickerFormatter}
                         />
                     </Stack>
+                    <Dropdown
+                        selectedKey={priority}
+                        label="Priority"
+                        options={priorityDropDown}
+                        onChange={handlePriorityChange}
+                        styles={{ root: { width: "150px" }, label: { color: "purple" } }}
+                    />
                     <TextField placeholder='Notes' multiline underlined={true} value={notes} onChange={handleNotesChange} />
                     <StackItem align='end'>
                         <PrimaryButton style={{ backgroundColor: "purple", width: "150px", borderRadius: "16px" }} text='Add Task' onClick={onClickAdd}></PrimaryButton>

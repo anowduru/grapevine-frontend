@@ -3,55 +3,56 @@ import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import useWindowDimensions, { BaseUrl } from '../utilities';
 
-function Login() {
+function ForgotPassword() {
     const history = useNavigate();
     const viewPort = useWindowDimensions();
     const [userName, setUserName] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
     const [userNameError, setUserNameError] = useState('');
-    const [passwordError, setPasswordError] = useState('');
+    const [emailError, setEmailError] = useState('');
 
     const handleUserNameChange = (_event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
         setUserName(newValue ?? "");
         setUserNameError("");
     }
 
-    const handlePasswordChange = (_event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
-        setPassword(newValue ?? "");
-        setPasswordError("");
+    const handleEmailChange = (_event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
+        setEmail(newValue ?? "");
+        setEmailError("");
     }
 
-    const onClickLogin = async () => {
+    const onClickForgotPassword = async () => {
         var isValid = true;
         if (userName.length === 0) {
             setUserNameError("Invalid Username")
             isValid = false;
         }
 
-        if (password.length === 0) {
-            setPasswordError("Invalid Password");
+        if (email.length === 0) {
+            setEmailError("Invalid Email");
             isValid = false;
         }
         if (!isValid)
             return;
-        const response = await fetch(`${BaseUrl}/login`, {
+        const response = await fetch(`${BaseUrl}/forgotPassword`, {
             method: "POST",
             headers: {
                 "content-type": "application/json"
             },
             body: JSON.stringify({
                 userName,
-                password
+                email
             })
         })
 
         const data = await response.json();
+        console.log(data)
 
         if (data.userToken) {
             localStorage.setItem('token', data.userToken);
             history('/dashboard/preplist');
         } else {
-            alert('Login Failed');
+            alert(data.status);
         }
     }
 
@@ -65,14 +66,13 @@ function Login() {
                         <Text variant='large' styles={{ root: { fontWeight: "bold", color: 'white' } }}>Welcome</Text>
                     </StackItem>
                     <TextField placeholder='UserName' styles={{ errorMessage: { color: 'white', fontWeight: 'bold' } }} errorMessage={userNameError} value={userName} onChange={handleUserNameChange} />
-                    <TextField type="password" styles={{ errorMessage: { color: 'white', fontWeight: 'bold' } }} errorMessage={passwordError} canRevealPassword required placeholder='Password' value={password} onChange={handlePasswordChange} />
-                    <Link href="/register" styles={{ root: { color: "white", textAlign: 'right', fontWeight: "bold" } }} underline>New User? Register</Link>
-                    <Link href="/forgotPassword" styles={{ root: { color: "white", textAlign: 'right', fontWeight: "bold" } }} underline>Forgot Password?</Link>
-                    <PrimaryButton style={{ backgroundColor: "green" }} text='Login' onClick={onClickLogin}></PrimaryButton>
+                    <TextField styles={{ errorMessage: { color: 'white', fontWeight: 'bold' } }} errorMessage={emailError} placeholder='Email address' value={email} onChange={handleEmailChange} />
+                    <PrimaryButton style={{ backgroundColor: "green" }} text='Forgot Password' onClick={onClickForgotPassword}></PrimaryButton>
+                    <Link href="/" styles={{ root: { color: "white", textAlign: 'right', fontWeight: "bold" } }} underline>Back to Login</Link>
                 </Stack>
             </StackItem>
         </Stack>
     );
 }
 
-export default Login;
+export default ForgotPassword;

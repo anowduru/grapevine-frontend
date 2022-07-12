@@ -6,10 +6,10 @@ function Archived() {
     const [tasks, setTasks] = useState<any[]>([])
 
     useEffect(() => {
-        fetch(`${BaseUrl}/tasks`)
+        fetch(`${BaseUrl}/archivedTasks`)
             .then(response => response.json())
             .then(json => setTasks(json.tasks));
-    });
+    }, []);
 
     const columns: IColumn[] = [
         {
@@ -46,7 +46,7 @@ function Archived() {
         }
     ];
 
-    const items = tasks.filter(x => x.status === "DONE").map((task, index) => {
+    const items = tasks.map((task, index) => {
         return {
             key: index.toString(),
             name: task.name,

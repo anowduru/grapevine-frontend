@@ -5,6 +5,7 @@ import Register from './pages/Register';
 import { Image, Stack, Text } from "@fluentui/react";
 import logo from "./images/Grapevine_Logo.png";
 import Dashboard from './pages/Dashboard';
+import ForgotPassword from './pages/ForgotPassword';
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
         <Routes>
           <Route path='' element={<Login />} />
           <Route path='register' element={<Register />} />
+          <Route path='forgotPassword' element={<ForgotPassword />} />
           <Route path='dashboard/*' element={<Dashboard />} />
         </Routes>
       </BrowserRouter>
