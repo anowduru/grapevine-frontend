@@ -67,7 +67,7 @@ function ForgotPassword() {
                     </StackItem>
                     <TextField placeholder='UserName' styles={{ errorMessage: { color: 'white', fontWeight: 'bold' } }} errorMessage={userNameError} value={userName} onChange={handleUserNameChange} />
                     <TextField styles={{ errorMessage: { color: 'white', fontWeight: 'bold' } }} errorMessage={emailError} placeholder='Email address' value={email} onChange={handleEmailChange} />
-                    <PrimaryButton style={{ backgroundColor: "green" }} text='Forgot Password' onClick={onClickForgotPassword}></PrimaryButton>
+                    <PrimaryButton style={{ backgroundColor: "green" }} text='Reset Password' onClick={onClickForgotPassword}></PrimaryButton>
                     <Link href="/" styles={{ root: { color: "white", textAlign: 'right', fontWeight: "bold" } }} underline>Back to Login</Link>
                 </Stack>
             </StackItem>
