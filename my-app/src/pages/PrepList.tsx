@@ -27,7 +27,7 @@ function PrepList() {
         fetch(`${BaseUrl}/chefs`)
             .then(response => response.json())
             .then(json => setChefUsers(json.chefs));
-    }, []);
+    }, [tasks]);
 
     const handleFilterChange = (_event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
         setFilterText(newValue ?? "");
