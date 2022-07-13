@@ -1,24 +1,25 @@
-import { Link, PrimaryButton, Stack, StackItem, Text, TextField } from '@fluentui/react';
+import { Label, Link, PrimaryButton, Stack, StackItem, Text, TextField } from '@fluentui/react';
 import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom";
 import useWindowDimensions, { BaseUrl } from '../utilities';
 
 function ForgotPassword() {
-    const history = useNavigate();
     const viewPort = useWindowDimensions();
     const [userName, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [userNameError, setUserNameError] = useState('');
     const [emailError, setEmailError] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleUserNameChange = (_event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
         setUserName(newValue ?? "");
         setUserNameError("");
+        setErrorMessage("");
     }
 
     const handleEmailChange = (_event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
         setEmail(newValue ?? "");
         setEmailError("");
+        setErrorMessage("");
     }
 
     const onClickForgotPassword = async () => {
@@ -46,13 +47,11 @@ function ForgotPassword() {
         })
 
         const data = await response.json();
-        console.log(data)
 
-        if (data.userToken) {
-            localStorage.setItem('token', data.userToken);
-            history('/dashboard/preplist');
+        if (data.status === 'ok') {
+            setErrorMessage(data.message);
         } else {
-            alert(data.status);
+            setErrorMessage(data.message);
         }
     }
 
@@ -68,6 +67,7 @@ function ForgotPassword() {
                     <TextField placeholder='UserName' styles={{ errorMessage: { color: 'white', fontWeight: 'bold' } }} errorMessage={userNameError} value={userName} onChange={handleUserNameChange} />
                     <TextField styles={{ errorMessage: { color: 'white', fontWeight: 'bold' } }} errorMessage={emailError} placeholder='Email address' value={email} onChange={handleEmailChange} />
                     <PrimaryButton style={{ backgroundColor: "green" }} text='Reset Password' onClick={onClickForgotPassword}></PrimaryButton>
+                    <Label styles={{ root: { color: 'white', fontWeight: 'bold' } }}>{errorMessage}</Label>
                     <Link href="/" styles={{ root: { color: "white", textAlign: 'right', fontWeight: "bold" } }} underline>Back to Login</Link>
                 </Stack>
             </StackItem>

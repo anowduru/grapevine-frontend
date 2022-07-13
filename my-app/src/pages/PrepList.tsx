@@ -27,11 +27,11 @@ function PrepList() {
         fetch(`${BaseUrl}/chefs`)
             .then(response => response.json())
             .then(json => setChefUsers(json.chefs));
-    }, [tasks]);
+    }, []);
 
     const handleFilterChange = (_event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
         setFilterText(newValue ?? "");
-        const items = newValue !== "" ? tasks.filter(t => t.name.toLowerCase().indexOf(newValue) > -1) : tasks;
+        const items = newValue !== "" ? tasks.filter(t => t.name.toLowerCase().indexOf(newValue?.toLowerCase()) > -1) : tasks;
         setFilteredTasks(items);
     }
 

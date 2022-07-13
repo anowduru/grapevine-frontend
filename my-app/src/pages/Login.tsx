@@ -1,4 +1,4 @@
-import { Link, PrimaryButton, Stack, StackItem, Text, TextField } from '@fluentui/react';
+import { Label, Link, PrimaryButton, Stack, StackItem, Text, TextField } from '@fluentui/react';
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import useWindowDimensions, { BaseUrl } from '../utilities';
@@ -10,15 +10,18 @@ function Login() {
     const [password, setPassword] = useState('');
     const [userNameError, setUserNameError] = useState('');
     const [passwordError, setPasswordError] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleUserNameChange = (_event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
         setUserName(newValue ?? "");
         setUserNameError("");
+        setErrorMessage("");
     }
 
     const handlePasswordChange = (_event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
         setPassword(newValue ?? "");
         setPasswordError("");
+        setErrorMessage("");
     }
 
     const onClickLogin = async () => {
@@ -46,12 +49,16 @@ function Login() {
         })
 
         const data = await response.json();
-
-        if (data.userToken) {
+        console.log(data);
+        if (data.status === 'ok') {
             localStorage.setItem('token', data.userToken);
-            history('/dashboard/preplist');
+            if (data.resetPasswordNeeded) {
+                history('/updatePassword', { state: { userName: userName } });
+            } else {
+                history('/dashboard/preplist');
+            }
         } else {
-            alert('Login Failed');
+            setErrorMessage(data.message);
         }
     }
 
@@ -69,6 +76,7 @@ function Login() {
                     <Link href="/register" styles={{ root: { color: "white", textAlign: 'right', fontWeight: "bold" } }} underline>New User? Register</Link>
                     <Link href="/forgotPassword" styles={{ root: { color: "white", textAlign: 'right', fontWeight: "bold" } }} underline>Forgot Password?</Link>
                     <PrimaryButton style={{ backgroundColor: "green" }} text='Login' onClick={onClickLogin}></PrimaryButton>
+                    <Label styles={{ root: { color: 'white', fontWeight: 'bold' } }}>{errorMessage}</Label>
                 </Stack>
             </StackItem>
         </Stack>

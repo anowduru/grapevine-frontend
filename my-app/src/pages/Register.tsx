@@ -1,4 +1,4 @@
-import { Dropdown, IDropdownOption, Link, PrimaryButton, Stack, StackItem, Text, TextField } from '@fluentui/react';
+import { Dropdown, IDropdownOption, Label, Link, PrimaryButton, Stack, StackItem, Text, TextField } from '@fluentui/react';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useWindowDimensions, { BaseUrl } from '../utilities';
@@ -16,29 +16,35 @@ function Register() {
     const [userType, setUserType] = useState('');
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleUserNameChange = (_event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
         setUserName(newValue ?? "");
-        setUserNameError("")
+        setUserNameError("");
+        setErrorMessage("");
     }
 
     const handlePasswordChange = (_event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
         setPassword(newValue ?? "");
-        setPasswordError("")
+        setPasswordError("");
+        setErrorMessage("");
     }
 
     const handleNameChange = (_event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
         setName(newValue ?? "");
-        setNameError("")
+        setNameError("");
+        setErrorMessage("");
     }
 
     const handleEmailChange = (_event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
         setEmail(newValue ?? "");
-        setEmailError("")
+        setEmailError("");
+        setErrorMessage("");
     }
 
     const handleUserTypeChange = (_event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => {
         setUserType(option?.key.toString() ?? "");
+        setErrorMessage("");
     }
 
     const onClickRegister = async () => {
@@ -86,7 +92,7 @@ function Register() {
             localStorage.setItem('token', data.userToken);
             history('/dashboard/preplist');
         } else {
-            alert('Login Failed');
+            setErrorMessage('Register failed!! Please try later');
         }
     }
 
@@ -113,6 +119,7 @@ function Register() {
                     <TextField required placeholder='Full Name' value={name} errorMessage={nameError} onChange={handleNameChange} styles={{ errorMessage: { color: 'white', fontWeight: 'bold' } }} />
                     <TextField required placeholder='Email address' value={email} errorMessage={emailError} onChange={handleEmailChange} styles={{ errorMessage: { color: 'white', fontWeight: 'bold' } }} />
                     <PrimaryButton style={{ backgroundColor: "green" }} text='Register' onClick={onClickRegister}></PrimaryButton>
+                    <Label styles={{ root: { color: 'white', fontWeight: 'bold' } }}>{errorMessage}</Label>
                     <Link href="/" styles={{ root: { color: "white", textAlign: 'right', fontWeight: "bold" } }} underline>Login</Link>
                 </Stack>
             </StackItem>

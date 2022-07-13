@@ -6,6 +6,7 @@ import { Image, Stack, Text } from "@fluentui/react";
 import logo from "./images/Grapevine_Logo.png";
 import Dashboard from './pages/Dashboard';
 import ForgotPassword from './pages/ForgotPassword';
+import UpdatePassword from './pages/UpdatePassword';
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
           <Route path='' element={<Login />} />
           <Route path='register' element={<Register />} />
           <Route path='forgotPassword' element={<ForgotPassword />} />
+          <Route path='updatePassword' element={<UpdatePassword />} />
           <Route path='dashboard/*' element={<Dashboard />} />
         </Routes>
       </BrowserRouter>
