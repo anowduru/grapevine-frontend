@@ -1,5 +1,5 @@
 import { Dropdown, IconButton, IDropdownOption, Stack, StackItem, Text, TextField } from '@fluentui/react';
-import { useContext, useState } from 'react';
+import { useContext, useLayoutEffect, useState } from 'react';
 import { BaseUrl } from '../utilities';
 import AddCategory from './AddCategory';
 import AddTaskDialog from './AddTaskDialog';
@@ -28,11 +28,11 @@ function PrepList() {
         fetch(`${BaseUrl}/tasks`)
             .then(response => response.json())
             .then(json => { setTasks(json.tasks); setFilteredTasks(json.tasks); });
-
-
     };
+    useLayoutEffect(() => {
+        loadData();
+    }, [])
 
-    loadData();
     const handleFilterChange = (_event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
         setFilterText(newValue ?? "");
         const items = newValue !== "" ? tasks.filter(t => t.name.toLowerCase().indexOf(newValue?.toLowerCase()) > -1) : tasks;

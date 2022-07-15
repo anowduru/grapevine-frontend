@@ -21,42 +21,51 @@ const PrepListTasks: React.FC<TaskListProps> = ({
             name: 'Task',
             fieldName: 'name',
             minWidth: 100,
-            maxWidth: 200,
+            maxWidth: 150,
             isRowHeader: true,
             isSortedDescending: false,
         },
         {
             key: 'column2',
-            name: 'QTY',
-            fieldName: 'quantity',
-            minWidth: 60,
-            maxWidth: 90,
+            name: 'Category',
+            fieldName: 'category',
+            minWidth: 100,
+            maxWidth: 150,
+            isRowHeader: true,
+            isSortedDescending: false,
         },
         {
             key: 'column3',
+            name: 'QTY',
+            fieldName: 'quantity',
+            minWidth: 50,
+            maxWidth: 70,
+        },
+        {
+            key: 'column4',
             name: 'CHEF',
             fieldName: 'assignedTo',
             minWidth: 70,
             maxWidth: 120,
         },
         {
-            key: 'column4',
+            key: 'column5',
             name: 'Due Date',
             fieldName: 'dueDate',
-            minWidth: 60,
-            maxWidth: 150,
-            isCollapsible: true
-        },
-        {
-            key: 'column5',
-            name: 'Priority',
-            fieldName: 'priority',
             minWidth: 60,
             maxWidth: 120,
             isCollapsible: true
         },
         {
             key: 'column6',
+            name: 'Priority',
+            fieldName: 'priority',
+            minWidth: 60,
+            maxWidth: 100,
+            isCollapsible: true
+        },
+        {
+            key: 'column7',
             name: 'Status',
             fieldName: 'status',
             minWidth: 60,
@@ -71,6 +80,7 @@ const PrepListTasks: React.FC<TaskListProps> = ({
             id: task._id,
             name: task.name,
             quantity: task.quantity,
+            categoryName: categories.find(c => c._id === task.category).name,
             assignedTo: task.assignedTo,
             status: task.status,
             priority: task.priority,
@@ -87,9 +97,10 @@ const PrepListTasks: React.FC<TaskListProps> = ({
                 case 'column1':
                     return <span>{item.name}</span>;
                 case 'column2':
-                    return <span>{item.quantity} Pcs</span>;
-
+                    return <span>{item.categoryName}</span>;
                 case 'column3':
+                    return <span>{item.quantity} Pcs</span>;
+                case 'column4':
                     const divStyle: React.CSSProperties = { "width": "100%", "display": "flex" };
                     return (
                         <div style={divStyle}>
@@ -100,7 +111,7 @@ const PrepListTasks: React.FC<TaskListProps> = ({
                             }
                         </div>
                     );
-                case 'column4':
+                case 'column5':
                     const dueDate = new Date(item.dueDate).setHours(0, 0, 0, 0);
                     const todayDate = new Date().setHours(0, 0, 0, 0);
                     const tomrrowDate = addDays(new Date(), 1).setHours(0, 0, 0, 0);
@@ -112,7 +123,7 @@ const PrepListTasks: React.FC<TaskListProps> = ({
                     else {
                         return <span>{formatDate(new Date(item.dueDate))}</span>
                     }
-                case 'column5':
+                case 'column6':
                     let style = {};
                     if (item.priority === "High")
                         style = { "color": "red", "fontWeight": "bold" }
@@ -121,7 +132,7 @@ const PrepListTasks: React.FC<TaskListProps> = ({
                     else if (item.priority === "Low")
                         style = { "color": "green", "fontWeight": "bold" }
                     return <span style={style}>{item.priority}</span>;
-                case 'column6':
+                case 'column7':
                     const pillStyle = {
                         color: "black",
                         borderRadius: "16px",
