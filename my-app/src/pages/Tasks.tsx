@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext, useLayoutEffect } from 'react';
 import { BaseUrl, formatDate } from '../utilities';
 import { addDays, DetailsList, DetailsRow, IColumn, IDetailsRowProps, SelectionMode } from '@fluentui/react';
 import { UserContext } from './Dashboard';
@@ -6,14 +6,24 @@ import EditTaskDialog from './EditTaskDialog';
 
 function Tasks() {
     const [tasks, setTasks] = useState<any[]>([]);
+    const [categories, setCategories] = useState<any[]>([]);
     const [selectedTask, setSelectedTask] = useState("");
     const user = useContext(UserContext);
 
-    useEffect(() => {
+    const loadData = () => {
+        fetch(`${BaseUrl}/taskCategories`)
+            .then(response => response.json())
+            .then(json => setCategories(json.taskCategories));
+
         fetch(`${BaseUrl}/tasks`)
             .then(response => response.json())
-            .then(json => setTasks(json.tasks));
-    }, []);
+            .then(json => { setTasks(json.tasks); });
+    };
+
+    useLayoutEffect(() => {
+        loadData();
+    }, [])
+
 
     const columns: IColumn[] = [
         {
@@ -21,24 +31,32 @@ function Tasks() {
             name: 'Task',
             fieldName: 'name',
             minWidth: 100,
-            maxWidth: 200,
+            maxWidth: 150,
             isRowHeader: true,
-            isSorted: true,
             isSortedDescending: false,
         },
         {
             key: 'column2',
+            name: 'Category',
+            fieldName: 'category',
+            minWidth: 100,
+            maxWidth: 150,
+            isRowHeader: true,
+            isSortedDescending: false,
+        },
+        {
+            key: 'column3',
             name: 'QTY',
             fieldName: 'quantity',
-            minWidth: 70,
-            maxWidth: 90,
+            minWidth: 50,
+            maxWidth: 70,
         },
         {
             key: 'column4',
             name: 'Due Date',
             fieldName: 'dueDate',
-            minWidth: 70,
-            maxWidth: 150,
+            minWidth: 60,
+            maxWidth: 120,
             isCollapsible: true
         },
         {
@@ -46,7 +64,7 @@ function Tasks() {
             name: 'Priority',
             fieldName: 'priority',
             minWidth: 60,
-            maxWidth: 120,
+            maxWidth: 100,
             isCollapsible: true
         },
         {
@@ -58,6 +76,7 @@ function Tasks() {
             isCollapsible: true
         }
     ];
+
     const [showEditDialog, setShowEditDialog] = useState(false);
 
     const items = user ? tasks.map((task, index) => {
@@ -68,6 +87,7 @@ function Tasks() {
                 name: task.name,
                 quantity: task.quantity,
                 assignedTo: task.assignedTo as any[],
+                categoryName: categories.find(c => c._id === task.category).name,
                 status: task.status,
                 priority: task.priority,
                 dueDate: task.dueDate
@@ -83,6 +103,8 @@ function Tasks() {
                 case 'column1':
                     return <span>{item.name}</span>;
                 case 'column2':
+                    return <span>{item.categoryName}</span>;
+                case 'column3':
                     return <span>{item.quantity} Pcs</span>;
                 case 'column4':
                     const dueDate = new Date(item.dueDate).setHours(0, 0, 0, 0);
@@ -97,14 +119,29 @@ function Tasks() {
                         return <span>{formatDate(new Date(item.dueDate))}</span>
                     }
                 case 'column5':
-                    return <span>{item.priority}</span>;
+                    let style = {};
+                    if (item.priority === "High")
+                        style = { "color": "red", "fontWeight": "bold" }
+                    else if (item.priority === "Medium")
+                        style = { "color": "orange", "fontWeight": "bold" }
+                    else if (item.priority === "Low")
+                        style = { "color": "green", "fontWeight": "bold" }
+                    return <span style={style}>{item.priority}</span>;
                 case 'column6':
+                    const pillStyle = {
+                        color: "black",
+                        borderRadius: "16px",
+                        fontWeight: "bold",
+                        padding: "10px",
+                        width: "73px"
+                    };
                     if (item.status === "NOTSTARTED")
-                        return <span>Yet to Begin</span>;
+                        return <div style={{ ...pillStyle, textAlign: "center", backgroundColor: "#C4C4C4" }}>Yet to Begin</div>;
                     else if (item.status === "DONE")
-                        return <span>Done</span>;
-                    if (item.status === "INPROGRESS")
-                        return <span>In Progress</span>;
+                        return <div style={{ ...pillStyle, textAlign: "center", backgroundColor: "#00D053" }}>Done</div>;
+                    else if (item.status === "INPROGRESS")
+                        return <div style={{ ...pillStyle, textAlign: "center", backgroundColor: "#2DC0FF" }}>In Progress</div>;
+                    break;
             }
         }
     }
