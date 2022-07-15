@@ -71,6 +71,7 @@ const AddTaskDialog: React.FC<TaskProps> = ({
             setNotes('');
             setTaskTitle('');
             setPriority('Medium');
+            setSelectedChefs([]);
             setDueDate(addDays(todayDate, 1))
             setTasks(data.tasks)
             setShowAddTaskDialog(false)
