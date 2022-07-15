@@ -1,4 +1,4 @@
-import { DefaultButton, Stack, StackItem, Text, TextField } from '@fluentui/react';
+import { Dropdown, IconButton, IDropdownOption, Stack, StackItem, Text, TextField } from '@fluentui/react';
 import { useContext, useState } from 'react';
 import { BaseUrl } from '../utilities';
 import AddCategory from './AddCategory';
@@ -8,6 +8,7 @@ import PrepListTasks from './PrepListTasks';
 
 function PrepList() {
     const [categories, setCategories] = useState<any[]>([]);
+    const [category, setCategory] = useState<string | number>('');
     const [chefs, setChefUsers] = useState<any[]>([]);
     const [tasks, setTasks] = useState<any[]>([]);
     const [filteredTasks, setFilteredTasks] = useState<any[]>([]);
@@ -38,16 +39,31 @@ function PrepList() {
         setFilteredTasks(items);
     }
 
+    const handleCategoryChange = (_event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => {
+        setCategory(option?.key ?? "");
+    }
+
+    const dropDownOptions = categories.map(category => {
+        return { "key": category._id, "text": category.name }
+    });
+
     return (
         <Stack tokens={{ childrenGap: "30px" }}>
             <Text variant='xxLarge' styles={{ root: { fontWeight: "bold", color: "purple" } }}>Prep List</Text>
             <Stack horizontal={true} horizontalAlign="space-between" tokens={{ childrenGap: "70px" }}>
                 <TextField label="Filter by task" value={fiterText} onChange={handleFilterChange} />
-                {user?.userType === "Admin" && (
-                    <StackItem styles={{ root: { paddingTop: "25px" } }}>
-                        <DefaultButton onClick={() => { setShowCategoryDialog(true) }} styles={{ root: { borderRadius: "16px" } }} key="addCategory" text="Add Category" iconProps={{ iconName: "Add" }} />
-                    </StackItem>
-                )}
+                <Stack horizontal={true} styles={{ root: { paddingTop: "25px" } }}>
+                    <Dropdown
+                        options={dropDownOptions}
+                        selectedKey={category}
+                        placeholder="Categories"
+                        onChange={handleCategoryChange}
+                        styles={{ root: { width: "250px" } }}
+                    />
+                    {user?.userType === "Admin" && (
+                        <IconButton onClick={() => { setShowCategoryDialog(true) }} styles={{ root: { borderRadius: "16px" } }} key="addCategory" text="Add Category" iconProps={{ iconName: "Add" }} />
+                    )}
+                </Stack>
                 <StackItem styles={{ root: { paddingTop: "25px" } }}>
                     <AddTaskDialog categories={categories} setTasks={setTasks} chefs={chefs} />
                 </StackItem>
