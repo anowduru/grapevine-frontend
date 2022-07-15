@@ -38,19 +38,19 @@ function PrepList() {
     return (
         <Stack tokens={{ childrenGap: "30px" }}>
             <Text variant='xxLarge' styles={{ root: { fontWeight: "bold", color: "purple" } }}>Prep List</Text>
-            <Stack horizontal={true} tokens={{ childrenGap: "80px" }}>
+            <Stack horizontal={true} horizontalAlign="space-between" tokens={{ childrenGap: "70px" }}>
                 <TextField label="Filter by task" value={fiterText} onChange={handleFilterChange} />
                 {user?.userType === "Admin" && (
                     <StackItem styles={{ root: { paddingTop: "25px" } }}>
                         <DefaultButton onClick={() => { setShowCategoryDialog(true) }} styles={{ root: { borderRadius: "16px" } }} key="addCategory" text="Add Category" iconProps={{ iconName: "Add" }} />
                     </StackItem>
                 )}
+                <StackItem styles={{ root: { paddingTop: "25px" } }}>
+                    <AddTaskDialog categories={categories} setTasks={setTasks} chefs={chefs} />
+                </StackItem>
             </Stack>
             <StackItem>
                 <PrepListTasks tasks={filteredTasks} chefs={chefs} setTasks={setTasks} />
-            </StackItem>
-            <StackItem align='end'>
-                <AddTaskDialog categories={categories} setTasks={setTasks} chefs={chefs} />
             </StackItem>
             <AddCategory
                 showCategoryDialog={showCategoryDialog}

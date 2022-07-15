@@ -111,14 +111,28 @@ const PrepListTasks: React.FC<TaskListProps> = ({
                         return <span>{formatDate(new Date(item.dueDate))}</span>
                     }
                 case 'column5':
-                    return <span>{item.priority}</span>;
+                    let style = {};
+                    if (item.priority === "High")
+                        style = { "color": "red", "font-weight": "bold" }
+                    else if (item.priority === "Medium")
+                        style = { "color": "orange", "font-weight": "bold" }
+                    else if (item.priority === "Low")
+                        style = { "color": "green", "font-weight": "bold" }
+                    return <span style={style}>{item.priority}</span>;
                 case 'column6':
+                    const pillStyle = {
+                        color: "black",
+                        borderRadius: "16px",
+                        fontWeight: "bold",
+                        padding: "10px",
+                        width: "73px"
+                    };
                     if (item.status === "NOTSTARTED")
-                        return <span>Yet to Begin</span>;
+                        return <div style={{ ...pillStyle, textAlign: "center", backgroundColor: "#C4C4C4" }}>Yet to Begin</div>;
                     else if (item.status === "DONE")
-                        return <span>Done</span>;
+                        return <div style={{ ...pillStyle, textAlign: "center", backgroundColor: "#00D053" }}>Done</div>;
                     else if (item.status === "INPROGRESS")
-                        return <span>In Progress</span>;
+                        return <div style={{ ...pillStyle, textAlign: "center", backgroundColor: "#2DC0FF" }}>In Progress</div>;
                     break;
             }
         }
