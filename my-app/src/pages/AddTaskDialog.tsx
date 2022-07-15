@@ -1,4 +1,4 @@
-import { addDays, DatePicker, DefaultButton, Dialog, Dropdown, Facepile, IDropdownOption, ISelectableOption, PersonaSize, PrimaryButton, Stack, StackItem, TextField } from "@fluentui/react";
+import { addDays, CommandButton, DatePicker, Dialog, Dropdown, Facepile, IDropdownOption, ISelectableOption, PersonaSize, PrimaryButton, Stack, StackItem, TextField } from "@fluentui/react";
 import { useContext, useState } from "react";
 import { BaseUrl } from "../utilities";
 import { UserContext } from "./Dashboard";
@@ -231,7 +231,7 @@ const AddTaskDialog: React.FC<TaskProps> = ({
                 </Stack>
             </Dialog>
             {user?.userType === "Admin" &&
-                <DefaultButton text="Add Task" onClick={() => { setShowAddTaskDialog(true) }} iconProps={{ iconName: "Add" }} />
+                <CommandButton text="Add Task" styles={{ label: { fontWeight: "bold", color: "blue" } }} onClick={() => { setShowAddTaskDialog(true) }} iconProps={{ iconName: "Add" }} />
             }
         </>
     )

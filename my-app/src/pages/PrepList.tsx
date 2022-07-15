@@ -81,12 +81,9 @@ function PrepList() {
         <Stack tokens={{ childrenGap: "30px" }}>
             <Text variant='xxLarge' styles={{ root: { fontWeight: "bold", color: "purple" } }}>Prep List</Text>
             <Stack horizontal={true} horizontalAlign="space-between" tokens={{ childrenGap: "70px" }}>
-                <Stack horizontal>
-                    <TextField label={`Filter by ${fiterCriteria}`} value={fiterText} onChange={handleFilterChange} />
-                    <StackItem styles={{ root: { paddingTop: "25px" } }}>
-                        <IconButton iconProps={{ iconName: "Filter" }} menuProps={menuProps} />
-                    </StackItem>
-                </Stack>
+                <StackItem styles={{ root: { paddingTop: "25px" } }}>
+                    <AddTaskDialog categories={categories} setTasks={setTasks} chefs={chefs} />
+                </StackItem>
                 <Stack horizontal={true} styles={{ root: { paddingTop: "25px" } }}>
                     <Dropdown
                         options={dropDownOptions}
@@ -99,9 +96,12 @@ function PrepList() {
                         <IconButton onClick={() => { setShowCategoryDialog(true) }} styles={{ root: { borderRadius: "16px" } }} key="addCategory" text="Add Category" iconProps={{ iconName: "Add" }} />
                     )}
                 </Stack>
-                <StackItem styles={{ root: { paddingTop: "25px" } }}>
-                    <AddTaskDialog categories={categories} setTasks={setTasks} chefs={chefs} />
-                </StackItem>
+                <Stack horizontal>
+                    <TextField label={`Filter by ${fiterCriteria}`} value={fiterText} onChange={handleFilterChange} />
+                    <StackItem styles={{ root: { paddingTop: "25px" } }}>
+                        <IconButton iconProps={{ iconName: "Filter" }} menuProps={menuProps} />
+                    </StackItem>
+                </Stack>
             </Stack>
             <StackItem>
                 <PrepListTasks categories={categories} tasks={filteredTasks} chefs={chefs} setTasks={setTasks} />
