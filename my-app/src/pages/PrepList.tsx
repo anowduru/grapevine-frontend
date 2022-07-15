@@ -1,4 +1,4 @@
-import { Dropdown, IconButton, IDropdownOption, Stack, StackItem, Text, TextField } from '@fluentui/react';
+import { Dropdown, IconButton, IContextualMenuProps, IDropdownOption, Stack, StackItem, Text, TextField } from '@fluentui/react';
 import { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { BaseUrl } from '../utilities';
 import AddCategory from './AddCategory';
@@ -13,6 +13,7 @@ function PrepList() {
     const [tasks, setTasks] = useState<any[]>([]);
     const [filteredTasks, setFilteredTasks] = useState<any[]>([]);
     const [fiterText, setFilterText] = useState('');
+    const [fiterCriteria, setFiterCriteria] = useState('task');
     const [showCategoryDialog, setShowCategoryDialog] = useState(false);
     const user = useContext(UserContext);
 
@@ -41,8 +42,14 @@ function PrepList() {
 
     const handleFilterChange = (_event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
         setFilterText(newValue ?? "");
-        const items = newValue !== "" ? tasks.filter(t => t.name.toLowerCase().indexOf(newValue?.toLowerCase()) > -1) : tasks;
-        setFilteredTasks(items);
+        if (fiterCriteria === 'task') {
+            const items = newValue !== "" ? tasks.filter(t => t.name.toLowerCase().indexOf(newValue?.toLowerCase()) > -1) : tasks;
+            setFilteredTasks(items);
+        } else {
+            const filteredCategoriesIds = newValue !== "" ? categories.filter(c => c.name.toLowerCase().indexOf(newValue?.toLowerCase()) > -1).map(c => c._id) : categories.map(c => c._id);
+            const items = newValue !== "" ? tasks.filter(t => filteredCategoriesIds.includes(t.category)) : tasks;
+            setFilteredTasks(items);
+        }
     }
 
     const handleCategoryChange = (_event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption) => {
@@ -53,11 +60,33 @@ function PrepList() {
         return { "key": category._id, "text": category.name }
     });
 
+    const menuProps: IContextualMenuProps = {
+        items: [
+            {
+                key: 'category',
+                text: 'Filter by Category',
+                onClick: () => setFiterCriteria('category')
+            },
+            {
+                key: 'task',
+                text: 'Filter by Task',
+                onClick: () => setFiterCriteria('task')
+            },
+        ],
+        directionalHintFixed: true,
+    };
+
+
     return (
         <Stack tokens={{ childrenGap: "30px" }}>
             <Text variant='xxLarge' styles={{ root: { fontWeight: "bold", color: "purple" } }}>Prep List</Text>
             <Stack horizontal={true} horizontalAlign="space-between" tokens={{ childrenGap: "70px" }}>
-                <TextField label="Filter by task" value={fiterText} onChange={handleFilterChange} />
+                <Stack horizontal>
+                    <TextField label={`Filter by ${fiterCriteria}`} value={fiterText} onChange={handleFilterChange} />
+                    <StackItem styles={{ root: { paddingTop: "25px" } }}>
+                        <IconButton iconProps={{ iconName: "Filter" }} menuProps={menuProps} />
+                    </StackItem>
+                </Stack>
                 <Stack horizontal={true} styles={{ root: { paddingTop: "25px" } }}>
                     <Dropdown
                         options={dropDownOptions}
