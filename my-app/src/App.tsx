@@ -11,7 +11,7 @@ import UpdatePassword from './pages/UpdatePassword';
 function App() {
 
   return (
-    <Stack wrap={true} styles={{ root: { width: "100%", padding: "30px" } }} tokens={{ childrenGap: "50px" }}>
+    <Stack wrap={true} styles={{ root: { width: "90%", padding: "10px" } }} tokens={{ childrenGap: "50px" }}>
       <Stack key="grapevineLogo" horizontal={true} styles={{ root: { width: "50%" } }} tokens={{ childrenGap: "10px" }} verticalAlign="center">
         <Image src={logo} />
         <Text variant='large' styles={{ root: { fontWeight: "bold" } }}>Grapevine</Text>

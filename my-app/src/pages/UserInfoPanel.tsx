@@ -13,7 +13,7 @@ function UserInfoPanel() {
     return (
         <>
             {user && (
-                <div style={{ position: "absolute", top: 15, right: 0 }}>
+                <div style={{ position: "absolute", top: 0, right: 0 }}>
                     <Stack horizontal>
                         <Facepile personaSize={PersonaSize.size40} personas={[{ imageInitials: user.userName[0] }]} />
                         <Link onClick={onClickLogout}>Logout</Link>

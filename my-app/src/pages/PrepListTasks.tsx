@@ -6,11 +6,13 @@ import EditTaskDialog from "./EditTaskDialog";
 interface TaskListProps {
     tasks: any[],
     chefs: any[],
+    categories: any[],
     setTasks: any
 }
 const PrepListTasks: React.FC<TaskListProps> = ({
     tasks,
     chefs,
+    categories,
     setTasks
 }) => {
     const columns: IColumn[] = [
@@ -113,11 +115,11 @@ const PrepListTasks: React.FC<TaskListProps> = ({
                 case 'column5':
                     let style = {};
                     if (item.priority === "High")
-                        style = { "color": "red", "font-weight": "bold" }
+                        style = { "color": "red", "fontWeight": "bold" }
                     else if (item.priority === "Medium")
-                        style = { "color": "orange", "font-weight": "bold" }
+                        style = { "color": "orange", "fontWeight": "bold" }
                     else if (item.priority === "Low")
-                        style = { "color": "green", "font-weight": "bold" }
+                        style = { "color": "green", "fontWeight": "bold" }
                     return <span style={style}>{item.priority}</span>;
                 case 'column6':
                     const pillStyle = {
