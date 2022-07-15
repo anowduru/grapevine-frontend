@@ -80,7 +80,7 @@ const PrepListTasks: React.FC<TaskListProps> = ({
             id: task._id,
             name: task.name,
             quantity: task.quantity,
-            categoryName: categories.find(c => c._id === task.category).name,
+            categoryName: categories?.find(c => c._id === task.category)?.name,
             assignedTo: task.assignedTo,
             status: task.status,
             priority: task.priority,
