@@ -117,8 +117,8 @@ function Dashboard() {
     return (
         <UserContext.Provider value={user}>
             <UserInfoPanel />
-            <Stack horizontal={!isSmallViewPort} tokens={{ childrenGap: "50px" }}>
-                <StackItem styles={{ root: { width: "150px" } }}>
+            <Stack horizontal={!isSmallViewPort} tokens={{ childrenGap: "20px" }}>
+                <StackItem styles={{ root: { width: "170px", backgroundColor: "white" } }}>
                     <Nav
                         ariaLabel="Grapevine navigation"
                         styles={navStyles}
@@ -126,7 +126,7 @@ function Dashboard() {
 
                     />
                 </StackItem>
-                <StackItem styles={{ root: { width: "calc(100% - 150px)" } }}>
+                <StackItem styles={{ root: { width: "calc(100% - 150px)", padding: "10px" } }}>
                     <div>
                         <Routes>
                             <Route path='prepList' element={<PrepList />} />

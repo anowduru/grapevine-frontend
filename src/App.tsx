@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import Login from './pages/Login';
 import Register from './pages/Register';
 import { Image, Stack, StackItem, Text } from "@fluentui/react";
-import logo from "./images/Grapevine_Logo.png";
+import logo from "./images/Grapevine_Logo.svg";
 import Dashboard from './pages/Dashboard';
 import ForgotPassword from './pages/ForgotPassword';
 import UpdatePassword from './pages/UpdatePassword';
@@ -11,8 +11,8 @@ import UpdatePassword from './pages/UpdatePassword';
 function App() {
 
   return (
-    <Stack styles={{ root: { padding: "10px" } }} tokens={{ childrenGap: "50px" }}>
-      <Stack key="grapevineLogo" horizontal={true} styles={{ root: { width: "50%" } }} tokens={{ childrenGap: "10px" }} verticalAlign="center">
+    <Stack>
+      <Stack key="grapevineLogo" horizontal={true} styles={{ root: { width: "100%", backgroundColor: "white", padding: "10px" } }} tokens={{ childrenGap: "10px" }} verticalAlign="center">
         <Image src={logo} />
         <Text variant='large' styles={{ root: { fontWeight: "bold" } }}>Grapevine</Text>
       </Stack>

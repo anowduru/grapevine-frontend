@@ -23,6 +23,7 @@ const PrepListTasks: React.FC<TaskListProps> = ({
             minWidth: 100,
             maxWidth: 150,
             isRowHeader: true,
+            isResizable: true,
             isSortedDescending: false,
         },
         {
@@ -32,6 +33,7 @@ const PrepListTasks: React.FC<TaskListProps> = ({
             minWidth: 100,
             maxWidth: 150,
             isRowHeader: true,
+            isResizable: true,
             isSortedDescending: false,
         },
         {
@@ -39,6 +41,7 @@ const PrepListTasks: React.FC<TaskListProps> = ({
             name: 'QTY',
             fieldName: 'quantity',
             minWidth: 50,
+            isResizable: true,
             maxWidth: 70,
         },
         {
@@ -47,6 +50,7 @@ const PrepListTasks: React.FC<TaskListProps> = ({
             fieldName: 'assignedTo',
             minWidth: 70,
             maxWidth: 120,
+            isResizable: true
         },
         {
             key: 'column5',
@@ -54,6 +58,7 @@ const PrepListTasks: React.FC<TaskListProps> = ({
             fieldName: 'dueDate',
             minWidth: 60,
             maxWidth: 120,
+            isResizable: true,
             isCollapsible: true
         },
         {
@@ -62,6 +67,7 @@ const PrepListTasks: React.FC<TaskListProps> = ({
             fieldName: 'priority',
             minWidth: 60,
             maxWidth: 100,
+            isResizable: true,
             isCollapsible: true
         },
         {
@@ -70,6 +76,7 @@ const PrepListTasks: React.FC<TaskListProps> = ({
             fieldName: 'status',
             minWidth: 60,
             maxWidth: 120,
+            isResizable: true,
             isCollapsible: true
         }
     ];
