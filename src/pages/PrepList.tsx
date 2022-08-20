@@ -1,6 +1,6 @@
 import { Dropdown, IconButton, IContextualMenuProps, IDropdownOption, Stack, StackItem, Text, TextField } from '@fluentui/react';
 import { useContext, useEffect, useLayoutEffect, useState } from 'react';
-import { BaseUrl } from '../utilities';
+import useWindowDimensions, { BaseUrl } from '../utilities';
 import AddCategory from './AddCategory';
 import AddTaskDialog from './AddTaskDialog';
 import { UserContext } from './Dashboard';
@@ -16,6 +16,9 @@ function PrepList() {
     const [fiterCriteria, setFiterCriteria] = useState('task');
     const [showCategoryDialog, setShowCategoryDialog] = useState(false);
     const user = useContext(UserContext);
+
+    const viewPort = useWindowDimensions();
+    const isSmallViewPort = ["s", "m", "l"].includes(viewPort);
 
     const loadData = () => {
         fetch(`${BaseUrl}/taskCategories`)
@@ -80,7 +83,7 @@ function PrepList() {
     return (
         <Stack tokens={{ childrenGap: "30px" }}>
             <Text variant='xxLarge' styles={{ root: { fontWeight: "bold", color: "purple" } }}>Prep List</Text>
-            <Stack horizontal={true} horizontalAlign="space-between" tokens={{ childrenGap: "70px" }}>
+            <Stack horizontal={!isSmallViewPort} horizontalAlign="space-between" tokens={{ childrenGap: "20px" }}>
                 <StackItem styles={{ root: { paddingTop: "25px" } }}>
                     <AddTaskDialog categories={categories} setTasks={setTasks} chefs={chefs} />
                 </StackItem>
