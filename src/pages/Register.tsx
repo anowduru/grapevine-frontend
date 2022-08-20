@@ -99,7 +99,7 @@ function Register() {
     const registerPanelWidth = ["s", "m", "l"].includes(viewPort) ? "250px" : "500px";
 
     return (
-        <Stack styles={{ root: { width: "100%", height: "400px", padding: "50px" } }} horizontalAlign='end' verticalAlign='center'>
+        <Stack styles={{ root: { width: "100%", padding: "50px" } }} horizontalAlign='end' verticalAlign='center'>
             <StackItem styles={{ root: { padding: "50px", backgroundColor: "purple", width: registerPanelWidth } }}>
                 <Stack tokens={{ childrenGap: "25px" }} >
                     <StackItem align='center' >

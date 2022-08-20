@@ -88,7 +88,7 @@ function UpdatePassword() {
     const loginPanelWidth = ["s", "m", "l"].includes(viewPort) ? "250px" : "500px";
 
     return (
-        <Stack styles={{ root: { height: "400px", padding: "30px" } }} horizontalAlign='end' verticalAlign='center'>
+        <Stack styles={{ root: { padding: "30px" } }} horizontalAlign='end' verticalAlign='center'>
             <StackItem styles={{ root: { padding: "50px", backgroundColor: "purple", width: loginPanelWidth } }}>
                 <Stack tokens={{ childrenGap: "25px" }} >
                     <StackItem align='center' >
