@@ -114,6 +114,8 @@ function Dashboard() {
         }
     }, [navigate])
 
+    const contentWidth = isSmallViewPort ? "100%" : "calc(100% - 170px)";
+
     return (
         <UserContext.Provider value={user}>
             <UserInfoPanel />
@@ -126,7 +128,7 @@ function Dashboard() {
 
                     />
                 </StackItem>
-                <StackItem styles={{ root: { width: "calc(100% - 150px)", padding: "10px" } }}>
+                <StackItem styles={{ root: { width: contentWidth, padding: "10px" } }}>
                     <div>
                         <Routes>
                             <Route path='prepList' element={<PrepList />} />
