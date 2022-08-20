@@ -11,12 +11,24 @@ import UpdatePassword from './pages/UpdatePassword';
 function App() {
 
   return (
-    <Stack>
-      <Stack key="grapevineLogo" horizontal={true} styles={{ root: { width: "100%", backgroundColor: "white", padding: "10px" } }} tokens={{ childrenGap: "10px" }} verticalAlign="center">
+    <Stack styles={{
+      root: {
+        height: '100%'
+      }
+    }}>
+      <Stack key="grapevineLogo" horizontal={true} styles={{
+        root: {
+          width: "100%", backgroundColor: "white", padding: "10px", boxShadow: '1px -1px 10px 3px lightgrey'
+        }
+      }} tokens={{ childrenGap: "10px" }} verticalAlign="center">
         <Image src={logo} />
         <Text variant='large' styles={{ root: { fontWeight: "bold" } }}>Grapevine</Text>
       </Stack>
-      <StackItem>
+      <StackItem styles={{
+        root: {
+          height: 'calc(100% - 75px)'
+        }
+      }}>
         <BrowserRouter>
           <Routes>
             <Route path='' element={<Login />} />

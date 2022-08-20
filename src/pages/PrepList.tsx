@@ -4,7 +4,7 @@ import useWindowDimensions, { BaseUrl } from '../utilities';
 import AddCategory from './AddCategory';
 import AddTaskDialog from './AddTaskDialog';
 import { UserContext } from './Dashboard';
-import PrepListTasks from './PrepListTasks';
+import PrepListTasksV2 from './PrepListTasksV2';
 
 function PrepList() {
     const [categories, setCategories] = useState<any[]>([]);
@@ -107,7 +107,7 @@ function PrepList() {
                 </Stack>
             </Stack>
             <StackItem>
-                <PrepListTasks categories={categories} tasks={filteredTasks} chefs={chefs} setTasks={setTasks} />
+                <PrepListTasksV2 categories={categories} tasks={filteredTasks} chefs={chefs} setTasks={setTasks} />
             </StackItem>
             <AddCategory
                 showCategoryDialog={showCategoryDialog}

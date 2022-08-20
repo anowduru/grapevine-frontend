@@ -1,0 +1,11 @@
+.right-container {
+    width: calc(100% - 300px);
+}
+
+
+@media only screen and (max-width: 700px) {
+    .right-container {
+        width: calc(100% - 20px);
+        padding: 10px;
+    }
+}

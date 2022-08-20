@@ -12,6 +12,7 @@ import useWindowDimensions from '../utilities';
 import PrepList from './PrepList';
 import Tasks from './Tasks';
 import Archived from './Archived';
+import styles from '../Stylesheets/scss/dashboard.module.scss'
 
 export const UserContext = createContext({} as any);
 
@@ -21,7 +22,8 @@ function Dashboard() {
     const [user, setUser] = useState<any>();
     const navStyles: Partial<INavStyles> = {
         root: {
-            width: 150,
+            // width: 150,
+            padding: 20,
             boxSizing: 'border-box',
             overflowY: 'auto',
         },
@@ -114,13 +116,19 @@ function Dashboard() {
         }
     }, [navigate])
 
-    const contentWidth = isSmallViewPort ? "100%" : "calc(100% - 170px)";
-
     return (
         <UserContext.Provider value={user}>
             <UserInfoPanel />
-            <Stack horizontal={!isSmallViewPort} tokens={{ childrenGap: "20px" }}>
-                <StackItem styles={{ root: { width: "170px", backgroundColor: "white" } }}>
+            <Stack 
+                horizontal={!isSmallViewPort} 
+                tokens={{ childrenGap: "20px" }} 
+                styles={{
+                    root: {
+                        height: '100%'
+                    }
+                }}
+            >
+                <StackItem styles={{ root: { width: "250px", backgroundColor: "white", boxShadow: '0px 15px 10px 3px lightgrey' } }}>
                     <Nav
                         ariaLabel="Grapevine navigation"
                         styles={navStyles}
@@ -128,7 +136,7 @@ function Dashboard() {
 
                     />
                 </StackItem>
-                <StackItem styles={{ root: { width: contentWidth, padding: "10px" } }}>
+                <StackItem className={styles['right-container']}>
                     <div>
                         <Routes>
                             <Route path='prepList' element={<PrepList />} />
