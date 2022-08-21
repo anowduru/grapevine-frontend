@@ -8,9 +8,10 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import styles from '../Stylesheets/scss/prepListTasks.module.scss'
-import { addDays, DetailsList, DetailsRow, Facepile, IColumn, IDetailsRowProps, PersonaSize, SelectionMode } from "@fluentui/react";
+import { addDays } from "@fluentui/react";
 import { formatDate } from "../utilities";
 import EditTaskDialog from "./EditTaskDialog";
+import { useState } from 'react';
 
 interface Column {
     key: string,
@@ -87,8 +88,19 @@ const PrepListTasks: React.FC<TaskListProps> = ({
 }) => {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [showEditDialog, setShowEditDialog] = useState(false);
+    const [selectedTask, setSelectedTask] = useState("");
 
-    console.log("=====tasks====", tasks)
+    const onItemInvoked = (itemId: any) => {
+        setSelectedTask(itemId);
+        setShowEditDialog(true);
+    };
+
+    const onRefreshTasks = (tasks: any) => {
+        setSelectedTask("");
+        setTasks(tasks)
+    }
+
     const rows = tasks.map((task, index) => {
         return {
             rowId: index.toString(),
@@ -177,50 +189,53 @@ const PrepListTasks: React.FC<TaskListProps> = ({
     }
 
     return (
-        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-            <TableContainer sx={{ maxHeight: 440 }}>
-                <Table stickyHeader aria-label="sticky table">
-                    <TableHead>
-                        <TableRow>
-                            {columns.map((column) => (
-                                <TableCell
-                                    key={column.key}
-                                    style={{ minWidth: column.minWidth }}
-                                >
-                                    {column.name}
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {rows
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((row) => {
-                                return (
-                                    <TableRow hover tabIndex={-1} key={row.id}>
-                                        {columns.map((column) => {
-                                            return (
-                                                <TableCell key={column.key}>
-                                                    {onRenderItemColumn(row, column)}
-                                                </TableCell>
-                                            );
-                                        })}
-                                    </TableRow>
-                                );
-                            })}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            <TablePagination
-                rowsPerPageOptions={[10, 25, 100]}
-                component="div"
-                count={rows.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-        </Paper>
+        <>
+            <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+                <TableContainer sx={{ maxHeight: 440 }}>
+                    <Table stickyHeader aria-label="sticky table">
+                        <TableHead>
+                            <TableRow>
+                                {columns.map((column) => (
+                                    <TableCell
+                                        key={column.key}
+                                        style={{ minWidth: column.minWidth }}
+                                    >
+                                        {column.name}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {rows
+                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                .map((row) => {
+                                    return (
+                                        <TableRow onClick={() => { onItemInvoked(row.id) }} hover tabIndex={-1} key={row.id}>
+                                            {columns.map((column) => {
+                                                return (
+                                                    <TableCell key={column.key}>
+                                                        {onRenderItemColumn(row, column)}
+                                                    </TableCell>
+                                                );
+                                            })}
+                                        </TableRow>
+                                    );
+                                })}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <TablePagination
+                    rowsPerPageOptions={[10, 25, 100]}
+                    component="div"
+                    count={rows.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+            </Paper>
+            <EditTaskDialog refreshTasks={onRefreshTasks} selectedTaskId={selectedTask} showDialog={showEditDialog} setShowDialog={setShowEditDialog} chefs={chefs} />
+        </>
     );
 }
 
