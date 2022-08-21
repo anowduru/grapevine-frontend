@@ -10,7 +10,7 @@ import * as Jwt from 'jsonwebtoken';
 import UserInfoPanel from './UserInfoPanel';
 import useWindowDimensions from '../utilities';
 import PrepList from './PrepList';
-import Archived from './Archived';
+import ArchivedV2 from './ArchivedV2';
 import styles from '../Stylesheets/scss/dashboard.module.scss'
 import TasksV2 from './TasksV2';
 
@@ -141,7 +141,7 @@ function Dashboard() {
                         <Routes>
                             <Route path='prepList' element={<PrepList />} />
                             <Route path='tasks' element={<TasksV2 />} />
-                            <Route path='archivedTasks' element={<Archived />} />
+                            <Route path='archivedTasks' element={<ArchivedV2 />} />
                         </Routes>
                     </div>
                 </StackItem>
