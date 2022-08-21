@@ -10,9 +10,9 @@ import * as Jwt from 'jsonwebtoken';
 import UserInfoPanel from './UserInfoPanel';
 import useWindowDimensions from '../utilities';
 import PrepList from './PrepList';
-import Tasks from './Tasks';
 import Archived from './Archived';
 import styles from '../Stylesheets/scss/dashboard.module.scss'
+import TasksV2 from './TasksV2';
 
 export const UserContext = createContext({} as any);
 
@@ -119,9 +119,9 @@ function Dashboard() {
     return (
         <UserContext.Provider value={user}>
             <UserInfoPanel />
-            <Stack 
-                horizontal={!isSmallViewPort} 
-                tokens={{ childrenGap: "20px" }} 
+            <Stack
+                horizontal={!isSmallViewPort}
+                tokens={{ childrenGap: "20px" }}
                 styles={{
                     root: {
                         height: '100%'
@@ -140,7 +140,7 @@ function Dashboard() {
                     <div>
                         <Routes>
                             <Route path='prepList' element={<PrepList />} />
-                            <Route path='tasks' element={<Tasks />} />
+                            <Route path='tasks' element={<TasksV2 />} />
                             <Route path='archivedTasks' element={<Archived />} />
                         </Routes>
                     </div>

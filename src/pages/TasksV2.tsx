@@ -1,31 +1,10 @@
-import * as React from 'react';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import styles from '../Stylesheets/scss/prepListTasks.module.scss'
-import { addDays } from "@fluentui/react";
-import { formatDate } from "../utilities";
-import EditTaskDialog from "./EditTaskDialog";
-import { useState } from 'react';
-
-export interface Column {
-    key: string,
-    name: string;
-    minWidth?: number,
-    fieldName: string
-}
-
-interface TaskListProps {
-    tasks: any[],
-    chefs: any[],
-    categories: any[],
-    setTasks: any
-}
+import React, { useState, useContext, useLayoutEffect } from 'react';
+import { BaseUrl, formatDate } from '../utilities';
+import { addDays, Stack, Text } from '@fluentui/react';
+import { UserContext } from './Dashboard';
+import EditTaskDialog from './EditTaskDialog';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
+import { Column } from './PrepListTasksV2';
 
 const columns: readonly Column[] = [
     { key: 'name', name: 'Task', fieldName: 'name', minWidth: 170 },
@@ -35,12 +14,6 @@ const columns: readonly Column[] = [
         name: 'QTY',
         minWidth: 50,
         fieldName: 'quantity'
-    },
-    {
-        key: 'assignedTo',
-        name: 'CHEF',
-        minWidth: 50,
-        fieldName: 'assignedTo'
     },
     {
         key: 'dueDate',
@@ -62,49 +35,29 @@ const columns: readonly Column[] = [
     }
 ];
 
-const PrepListTasks: React.FC<TaskListProps> = ({
-    tasks,
-    chefs,
-    categories,
-    setTasks
-}) => {
+function TasksV2() {
+    const [tasks, setTasks] = useState<any[]>([]);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
-    const [showEditDialog, setShowEditDialog] = useState(false);
+    const [categories, setCategories] = useState<any[]>([]);
     const [selectedTask, setSelectedTask] = useState("");
+    const [showEditDialog, setShowEditDialog] = useState(false);
 
-    const onItemInvoked = (itemId: any) => {
-        setSelectedTask(itemId);
-        setShowEditDialog(true);
+    const user = useContext(UserContext);
+
+    const loadData = () => {
+        fetch(`${BaseUrl}/taskCategories`)
+            .then(response => response.json())
+            .then(json => setCategories(json.taskCategories));
+
+        fetch(`${BaseUrl}/tasks`)
+            .then(response => response.json())
+            .then(json => { setTasks(json.tasks); });
     };
 
-    const onRefreshTasks = (tasks: any) => {
-        setSelectedTask("");
-        setTasks(tasks)
-    }
-
-    const rows = tasks.map((task, index) => {
-        return {
-            rowId: index.toString(),
-            id: task._id,
-            name: task.name,
-            quantity: task.quantity,
-            categoryName: categories?.find(c => c._id === task.category)?.name,
-            assignedTo: task.assignedTo,
-            status: task.status,
-            priority: task.priority,
-            dueDate: task.dueDate
-        }
-    });
-
-    const handleChangePage = (event: unknown, newPage: number) => {
-        setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
+    useLayoutEffect(() => {
+        loadData();
+    }, [])
 
     const onRenderItemColumn = (item?: any, column?: any) => {
         if (column) {
@@ -115,22 +68,6 @@ const PrepListTasks: React.FC<TaskListProps> = ({
                     return <span>{item.categoryName}</span>;
                 case 'quantity':
                     return <span>{item.quantity} Pcs</span>;
-                case 'assignedTo':
-                    const divStyle: React.CSSProperties = { "width": "100%", "display": "flex" };
-                    return (
-                        <div style={divStyle}>
-                            {
-                                (item.assignedTo as string[]).map((chef, index) => {
-                                    const initial = chefs?.find(c => c._id === chef)?.name[0]
-                                    return (
-                                        <div className={styles["assignee"]}>
-                                            {initial}
-                                        </div>
-                                    )
-                                })
-                            }
-                        </div>
-                    );
                 case 'dueDate':
                     const dueDate = new Date(item.dueDate).setHours(0, 0, 0, 0);
                     const todayDate = new Date().setHours(0, 0, 0, 0);
@@ -170,8 +107,46 @@ const PrepListTasks: React.FC<TaskListProps> = ({
         }
     }
 
+    const onItemInvoked = (itemId: any) => {
+        setSelectedTask(itemId);
+        setShowEditDialog(true);
+    };
+
+    const onRefreshTasks = (tasks: any) => {
+        setSelectedTask("");
+        setTasks(tasks)
+    }
+
+    const rows = user ? tasks.map((task, index) => {
+        if ((task.assignedTo as string[]).includes(user.id)) {
+            return {
+                rowId: index.toString(),
+                id: task._id,
+                name: task.name,
+                quantity: task.quantity,
+                categoryName: categories?.find(c => c._id === task.category)?.name,
+                assignedTo: task.assignedTo,
+                status: task.status,
+                priority: task.priority,
+                dueDate: task.dueDate
+            }
+        } else {
+            return undefined
+        }
+    }).filter(x => x !== undefined) : [];
+
+    const handleChangePage = (event: unknown, newPage: number) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
+
     return (
-        <>
+        <Stack tokens={{ childrenGap: "30px" }}>
+            <Text variant='xxLarge' styles={{ root: { fontWeight: "bold", color: "purple" } }}>My Tasks</Text>
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                 <TableContainer sx={{ maxHeight: 440 }}>
                     <Table stickyHeader aria-label="sticky table">
@@ -192,7 +167,7 @@ const PrepListTasks: React.FC<TaskListProps> = ({
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row) => {
                                     return (
-                                        <TableRow onClick={() => { onItemInvoked(row.id) }} hover tabIndex={-1} key={row.id}>
+                                        <TableRow onClick={() => { onItemInvoked(row?.id) }} hover tabIndex={-1} key={row?.id}>
                                             {columns.map((column) => {
                                                 return (
                                                     <TableCell key={column.key}>
@@ -216,10 +191,9 @@ const PrepListTasks: React.FC<TaskListProps> = ({
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
-            <EditTaskDialog refreshTasks={onRefreshTasks} selectedTaskId={selectedTask} showDialog={showEditDialog} setShowDialog={setShowEditDialog} chefs={chefs} />
-        </>
+            <EditTaskDialog refreshTasks={onRefreshTasks} selectedTaskId={selectedTask} showDialog={showEditDialog} setShowDialog={setShowEditDialog} />
+        </Stack>
     );
 }
 
-
-export default PrepListTasks;
+export default TasksV2;
